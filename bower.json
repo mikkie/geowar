@@ -1,0 +1,26 @@
+{
+  "name": "geowar",
+  "description": "geometry war game",
+  "main": "index.js",
+  "authors": [
+    "mingjie Li"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "2d",
+    "game",
+    "war"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser": "^2.6.2"
+  }
+}

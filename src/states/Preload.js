@@ -22,7 +22,7 @@ export default class Preload {
 
         this.load.image('play','assets/images/play.png');
 
-        //staaaart load
+        //start load
         this.load.start();
     }
 

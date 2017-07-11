@@ -1,8 +1,6 @@
-import Utils from '../common/Utils.js';
-
 export default class Player extends Phaser.Sprite {
 
-    constructor(game, x, y, width, height, color, shape) {
+    constructor(game, x, y, width, height, color, shape, weaponFactory) {
         super(game, x, y, game.make.bitmapData(width, height));
         this.canvas = this.key;
         this.color = color;
@@ -17,6 +15,7 @@ export default class Player extends Phaser.Sprite {
         this.body.collideWorldBounds = true;
         this.body.drag.set(60);
 
+        this.weaponFactory = weaponFactory;   
         this.createWeapon();
     }
 
@@ -66,33 +65,8 @@ export default class Player extends Phaser.Sprite {
         }
     }
     
-
-    createBullet(){
-       var bmd = this.game.make.bitmapData(12, 12);
-       var ctx = bmd.ctx;
-       ctx.beginPath();
-       ctx.fillStyle = Utils.generateRandomColor();
-       ctx.arc(6, 6, 6, 0, 2 * Math.PI, false);
-       ctx.closePath();
-       ctx.fill();
-       return bmd;
-    }
-
     createWeapon() {
-        //  Creates 30 bullets, using the 'bullet' graphic
-        this.weapon = this.game.add.weapon(30, this.createBullet());
-
-        //  The bullet will be automatically killed when it leaves the world bounds
-        this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-
-        //  The speed at which the bullet is fired
-        this.weapon.bulletSpeed = 400;
-
-        //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
-        this.weapon.fireRate = 60;
-
-        //  Add a variance to the bullet speed by +- this value
-        this.weapon.bulletSpeedVariance = 200;
+        this.weapon = this.weaponFactory.createBasicWeapon(); 
 
         //  Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
         this.weapon.trackSprite(this, this.width / 2, 0, true);

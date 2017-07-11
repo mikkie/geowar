@@ -1,11 +1,10 @@
 export default class Player extends Phaser.Sprite {
 
-    constructor(game, x, y, width, height, color, shape, weaponFactory) {
+    constructor(game, x, y, width, height, color, weaponFactory) {
         super(game, x, y, game.make.bitmapData(width, height));
         this.canvas = this.key;
         this.color = color;
-        this.shape = shape;
-
+        
         this.draw();
 
         this.speed = 300;
@@ -15,31 +14,29 @@ export default class Player extends Phaser.Sprite {
         this.body.collideWorldBounds = true;
         this.body.drag.set(60);
 
-        this.weaponFactory = weaponFactory;   
+        this.weaponFactory = weaponFactory;
         this.createWeapon();
     }
 
 
     draw() {
-        if ('triangle' == this.shape) {
-            var ctx = this.canvas.ctx;
-            //body
-            ctx.beginPath();
-            ctx.fillStyle = this.color;
-            ctx.moveTo(0,0);
-            ctx.lineTo(this.canvas.height, this.canvas.height / 2);
-            ctx.lineTo(0, this.canvas.height);
-            ctx.closePath();
-            ctx.fill();
-            //head
-            ctx.beginPath();
-            ctx.lineWith = 2;
-            ctx.strokeStyle = this.color;
-            ctx.moveTo(this.canvas.height, this.canvas.height / 2);
-            ctx.lineTo(this.canvas.width, this.canvas.height / 2);
-            ctx.closePath();
-            ctx.stroke();
-        }
+        var ctx = this.canvas.ctx;
+        //body
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.moveTo(0, 0);
+        ctx.lineTo(this.canvas.height, this.canvas.height / 2);
+        ctx.lineTo(0, this.canvas.height);
+        ctx.closePath();
+        ctx.fill();
+        //head
+        ctx.beginPath();
+        ctx.lineWith = 2;
+        ctx.strokeStyle = this.color;
+        ctx.moveTo(this.canvas.height, this.canvas.height / 2);
+        ctx.lineTo(this.canvas.width, this.canvas.height / 2);
+        ctx.closePath();
+        ctx.stroke();
     }
 
     update() {
@@ -60,13 +57,13 @@ export default class Player extends Phaser.Sprite {
             this.game.physics.arcade.velocityFromAngle(this.angle, 300, this.body.velocity);
         }
 
-        if(this.fireButton.isDown){
+        if (this.fireButton.isDown) {
             this.weapon.fire();
         }
     }
-    
+
     createWeapon() {
-        this.weapon = this.weaponFactory.createBasicWeapon(); 
+        this.weapon = this.weaponFactory.createBasicWeapon();
 
         //  Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
         this.weapon.trackSprite(this, this.width / 2, 0, true);

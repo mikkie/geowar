@@ -1,8 +1,11 @@
 import Player from '../prefabs/Player.js';
+import SquarePlayer from '../prefabs/SquarePlayer.js';
 import Utils from '../common/Utils.js';
 import WeaponFactory from '../prefabs/WeaponFactory.js';
 
 export default class Game extends Phaser.State {
+
+    _playerTypes = ['triangle','square'];
 
     create() {
         //stage
@@ -11,8 +14,18 @@ export default class Game extends Phaser.State {
         //weapon factory
         this.weaponFactory = new WeaponFactory(this.game);
         //player
-        this.player = new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, Utils.generateRandomColor(), 'triangle', this.weaponFactory);
+        this.player = this.createPlayer();
         this.game.add.existing(this.player);
+    }
+
+    createPlayer(){
+       var type = this._playerTypes[Math.floor(Math.random() * this._playerTypes.length)];
+       if('triangle' == type){
+          return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, Utils.generateRandomColor(), this.weaponFactory);  
+       }
+       else if('square' == type){
+          return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, Utils.generateRandomColor(), this.weaponFactory);
+       }
     }
 
     update() {

@@ -4,16 +4,24 @@ export default class Weapon {
 
     constructor(game) {
         this.game = game;
+        this.createBullet();
+        this.createWeapon();
+    }
 
-        var bmd = this.game.make.bitmapData(12, 12);
-        var ctx = bmd.ctx;
+
+    createBullet() {
+        this.bmd = this.game.make.bitmapData(12, 12);
+        var ctx = this.bmd.ctx;
         ctx.beginPath();
         ctx.fillStyle = Utils.generateRandomColor();
         ctx.arc(6, 6, 6, 0, 2 * Math.PI, false);
         ctx.closePath();
         ctx.fill();
+    }
 
-        this.weapon = this.game.add.weapon(30, bmd);
+
+    createWeapon(){
+        this.weapon = this.game.add.weapon(30, this.bmd);
 
         //  The bullet will be automatically killed when it leaves the world bounds
         this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -29,12 +37,12 @@ export default class Weapon {
     }
 
 
-    trackSprite(sprite, x, y, rotation){
-        this.weapon.trackSprite(sprite, x, y, rotation);   
+    trackSprite(sprite, x, y, rotation) {
+        this.weapon.trackSprite(sprite, x, y, rotation);
     }
 
 
-    fire(){
+    fire() {
         this.weapon.fire();
     }
 

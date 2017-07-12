@@ -63,7 +63,7 @@ export default class Player extends Phaser.Sprite {
     }
 
     createWeapon() {
-        this.weapon = this.weaponFactory.createWeapon('dirt');
+        this.weapon = this.weaponFactory.createWeapon();
 
         this.weapon.trackSprite(this, this.width / 2, 0, true);
 

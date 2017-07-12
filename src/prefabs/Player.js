@@ -65,7 +65,6 @@ export default class Player extends Phaser.Sprite {
     createWeapon() {
         this.weapon = this.weaponFactory.createBasicWeapon();
 
-        //  Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
         this.weapon.trackSprite(this, this.width / 2, 0, true);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);

@@ -9,8 +9,8 @@ export default class DirtWeapon extends Weapon{
         ctx.beginPath();
         ctx.fillStyle = Utils.generateRandomColor();
         ctx.moveTo(0, 0);
-        ctx.lineTo(12, 6.93);
-        ctx.lineTo(0, 13.86);
+        ctx.lineTo(12, 6);
+        ctx.lineTo(0, 12);
         ctx.closePath();
         ctx.fill();
     }

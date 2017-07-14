@@ -1,9 +1,6 @@
 {
     "head": {
         "style": "stroke",
-        "ctxProp" : {
-            "lineWith" : "2"
-        },
         "draw": [
             {
                 "drawType": "move",

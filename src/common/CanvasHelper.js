@@ -1,58 +1,68 @@
 import Utils from './Utils.js';
 
-export default class CanvasHelper{
+export default class CanvasHelper {
 
-    constructor(canvas,json,colorSet){
+    constructor(canvas, json, colorSet) {
         this.canvas = canvas;
         this.texture = json;
-        this.colorSet = colorSet;  
+        this.colorSet = colorSet;
     }
 
     drawTexture() {
-        var ctx = this.canvas.ctx;
-        ctx.beginPath();
+        this.ctx = this.canvas.ctx;
+        this.ctx.beginPath();
         for (var key in this.texture) {
+            this.updateCtxProp(this.texture[key].ctxProp);
             for (var i in this.texture[key].draw) {
                 var part = this.texture[key].draw[i];
                 var x = this.parseExpress(part.x);
                 var y = this.parseExpress(part.y);
                 if (part.drawType == 'move') {
-                    ctx.moveTo(x, y);
+                    this.ctx.moveTo(x, y);
                 }
                 else if (part.drawType == 'line') {
-                    ctx.lineTo(x, y);
+                    this.ctx.lineTo(x, y);
                 }
             }
-            ctx.closePath();
+            this.ctx.closePath();
             if (this.texture[key].style == 'stroke') {
-                ctx.strokeStyle = this.getColor(key);
-                ctx.stroke();
+                this.ctx.strokeStyle = this.getColor(key);
+                this.ctx.stroke();
             }
             else if (this.texture[key].style == 'fill') {
-                ctx.fillStyle = this.getColor(key);
-                ctx.fill();
+                this.ctx.fillStyle = this.getColor(key);
+                this.ctx.fill();
+            }
+        }
+    }
+
+
+    updateCtxProp(ctxProp) {
+        if (ctxProp) {
+            for (var k in ctxProp) {
+                this.ctx[k] = ctxProp[k];
             }
         }
     }
 
 
 
-    getColor(key){
-       if(this.colorSet && this.colorSet[key]){
-          return this.colorSet[key]; 
-       }
-       return Utils.generateRandomColor();
+    getColor(key) {
+        if (this.colorSet && this.colorSet[key]) {
+            return this.colorSet[key];
+        }
+        return Utils.generateRandomColor();
     }
 
 
-    parseExpress(pos){
-       if(isNaN(pos) && /\$\{.*\}/.test(pos)){
-          pos = pos.replace(/canvas.height/gi,this.canvas.height).replace(/canvas.width/gi,this.canvas.width); 
-          pos = pos.substring(2,pos.length - 1);
-          pos = eval(pos);
-          return pos;   
-       }
-       return pos 
+    parseExpress(pos) {
+        if (isNaN(pos) && /\$\{.*\}/.test(pos)) {
+            pos = pos.replace(/canvas.height/gi, this.canvas.height).replace(/canvas.width/gi, this.canvas.width);
+            pos = pos.substring(2, pos.length - 1);
+            pos = eval(pos);
+            return pos;
+        }
+        return pos
     }
 
 }

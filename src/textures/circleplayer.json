@@ -21,25 +21,12 @@
         "style": "fill",
         "draw": [
             {
-                "drawType": "move",
-                "x": "0",
-                "y": "0"
+                "drawType": "arc",
+                "x": "15",
+                "y": "15",
+                "radius" : "14",
+                "arc" : "${2 * Math.PI}"
             },
-            {
-                "drawType": "line",
-                "x": "${canvas.height}",
-                "y": "0"
-            },
-            {
-                "drawType": "line",
-                "x": "${canvas.height}",
-                "y": "${canvas.height}"
-            },
-            {
-                "drawType": "line",
-                "x": "0",
-                "y": "${canvas.height}"
-            }
         ]
     }
 }

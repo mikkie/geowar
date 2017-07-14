@@ -10,7 +10,7 @@ export default class Game extends Phaser.State {
         //factories
         this.playerFactory = new PlayerFactory(this.game);
         //player
-        this.player = this.playerFactory.createPlayer('triangle');
+        this.player = this.playerFactory.createPlayer();
         this.game.add.existing(this.player);
     }
 

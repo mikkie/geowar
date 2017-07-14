@@ -23,6 +23,11 @@ export default class CanvasHelper {
                 else if (part.drawType == 'line') {
                     this.ctx.lineTo(x, y);
                 }
+                else if (part.drawType == 'arc') {
+                    var radius = this.parseExpress(part.radius);
+                    var arc = this.parseExpress(part.arc);
+                    this.ctx.arc(x, y, radius, 0, arc, false);
+                }
             }
             this.ctx.closePath();
             if (this.texture[key].style == 'stroke') {

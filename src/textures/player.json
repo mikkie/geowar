@@ -1,0 +1,37 @@
+{
+    "head": {
+        "style": "stroke",
+        "draw": [
+            {
+                "drawType": "move",
+                "x": "${canvas.height}",
+                "y": "${canvas.height/2}"
+            },
+            {
+                "drawType": "line",
+                "x": "${canvas.width}",
+                "y": "${canvas.height/2}"
+            }
+        ]
+    },
+    "body": {
+        "style": "fill",
+        "draw": [
+            {
+                "drawType": "move",
+                "x": "0",
+                "y": "0"
+            },
+            {
+                "drawType": "line",
+                "x": "${canvas.height}",
+                "y": "${canvas.height/2}"
+            },
+            {
+                "drawType": "line",
+                "x": "0",
+                "y": "${canvas.height}"
+            }
+        ]
+    }
+}

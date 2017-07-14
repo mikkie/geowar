@@ -8,13 +8,16 @@ export default class PlayerFactory {
 
     _playerTypes = ['triangle', 'square', 'circle'];
 
-    constructor(game){
-       this.game = game; 
-       this.weaponFactory = new WeaponFactory(game); 
+    constructor(game) {
+        this.game = game;
+        this.weaponFactory = new WeaponFactory(game);
     }
 
-    createPlayer() {
-        var type = this._playerTypes[Math.floor(Math.random() * this._playerTypes.length)];
+    createPlayer(defaultType) {
+        var type = defaultType;
+        if (!type) {
+            type = this._playerTypes[Math.floor(Math.random() * this._playerTypes.length)];
+        }
         switch (type) {
             case "triangle":
                 return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, Utils.generateRandomColor(), this.weaponFactory);

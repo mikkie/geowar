@@ -1,0 +1,14 @@
+{
+    "body": {
+        "style": "fill",
+        "draw": [
+            {
+                "drawType": "arc",
+                "x": "6",
+                "y": "6",
+                "radius" : "6",
+                "arc" : "${2 * Math.PI}"
+            }
+        ]
+    }
+}

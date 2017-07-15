@@ -1,0 +1,22 @@
+{
+    "body": {
+        "style": "fill",
+        "draw": [
+            {
+                "drawType": "move",
+                "x": "0",
+                "y": "0"
+            },
+            {
+                "drawType": "line",
+                "x": "12",
+                "y": "6"
+            },
+            {
+                "drawType": "line",
+                "x": "0",
+                "y": "12"
+            }
+        ]
+    }
+}

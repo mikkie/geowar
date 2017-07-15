@@ -1,5 +1,5 @@
-import CanvasHelper from '../common/CanvasHelper.js';
-import playerJson from '../textures/Player.json';
+import CanvasHelper from '../../common/CanvasHelper.js';
+import playerJson from '../../textures/players/Player.json';
 
 export default class Player extends Phaser.Sprite {
 
@@ -52,7 +52,7 @@ export default class Player extends Phaser.Sprite {
     createWeapon() {
         this.weapon = this.weaponFactory.createWeapon('dirt');
 
-        this.weapon.trackSprite(this, this.width / 2, 0, true);
+        this.weapon.trackSprite(this, this.width / 2 + 5, 0, true);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     }

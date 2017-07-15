@@ -1,4 +1,6 @@
-import Utils from '../common/Utils.js';
+import Utils from '../../common/Utils.js';
+import CanvasHelper from '../../common/CanvasHelper.js';
+import weaponJson from '../../textures/weapons/weapon.json';
 
 export default class Weapon {
 
@@ -11,12 +13,7 @@ export default class Weapon {
 
     createBullet() {
         this.bmd = this.game.make.bitmapData(12, 12);
-        var ctx = this.bmd.ctx;
-        ctx.beginPath();
-        ctx.fillStyle = Utils.generateRandomColor();
-        ctx.arc(6, 6, 6, 0, 2 * Math.PI, false);
-        ctx.closePath();
-        ctx.fill();
+        new CanvasHelper(this.bmd,weaponJson).drawTexture();
     }
 
 

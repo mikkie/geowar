@@ -1,5 +1,5 @@
 import Utils from '../common/Utils.js';
-import PlayerFactory from '../prefabs/PlayerFactory.js';
+import PlayerFactory from '../prefabs/players/PlayerFactory.js';
 
 export default class Game extends Phaser.State {
 

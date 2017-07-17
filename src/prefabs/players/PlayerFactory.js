@@ -30,4 +30,28 @@ export default class PlayerFactory {
         }
     }
 
+
+    createPeerPlayer(peerMetaData){
+       var type = peerMetaData.type;
+       var bmd = this.game.make.bitmapData(35, 30);
+       switch (type) {
+            case "triangle":
+                 Player.drawPeer(bmd);   
+                 break;
+            case "square":
+                 SquarePlayer.drawPeer(bmd);
+                 break;
+            case "circle":
+                 CirclePlayer.drawPeer(bmd);
+                 break;
+            default:
+                 Player.drawPeer(bmd);
+                 break;
+        }
+        var sprite = this.game.add.sprite(peerMetaData.x, peerMetaData.y, bmd);   
+        sprite.angle = peerMetaData.angle;
+        sprite.anchor.setTo(0.5, 0.5);
+        return sprite;   
+    }
+
 }

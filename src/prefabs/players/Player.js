@@ -26,6 +26,10 @@ export default class Player extends Phaser.Sprite {
         new CanvasHelper(this.canvas, playerJson).drawTexture();
     }
 
+    static drawPeer(canvas){
+        new CanvasHelper(canvas, playerJson).drawTexture();
+    }
+
     update() {
         this.body.velocity.x = 0;
         this.body.velocity.y = 0;
@@ -53,7 +57,7 @@ export default class Player extends Phaser.Sprite {
 
 
     pushState() {
-        this.game.geowar.socketHandler.push({ name: "player", id: this.game.geowar.playerId, x : this.x, y : this.y, canvas : this.canvas.canvas });
+        this.game.geowar.socketHandler.push({ name: "player", id: this.game.geowar.playerId, x : this.x, y : this.y, angle : this.angle, type : "triangle" });
     }
 
 

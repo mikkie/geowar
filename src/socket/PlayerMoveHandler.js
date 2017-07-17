@@ -1,7 +1,10 @@
+import PlayerFactory from '../prefabs/players/PlayerFactory.js';
+
 export default class PlayerMoveHandler {
 
       constructor(game) {
             this.game = game;
+            this.playerFactory = new PlayerFactory(this.game);
       }
 
       handle(data) {
@@ -12,9 +15,7 @@ export default class PlayerMoveHandler {
                   this.game.geowar.peerPlayers[data.id].destroy();
                   delete this.game.geowar.peerPlayers[data.id];
             }
-            var bmd = this.game.make.bitmapData(35, 30);
-            bmd.canvas = data.canvas;
-            var sprite = this.game.add.sprite(data.x, data.y, bmd);
+            var sprite = this.playerFactory.createPeerPlayer(data);
             this.game.geowar.peerPlayers[data.id] = sprite;
       }
 

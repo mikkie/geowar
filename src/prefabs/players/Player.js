@@ -7,7 +7,7 @@ export default class Player extends Phaser.Sprite {
         super(game, x, y, game.make.bitmapData(width, height));
         this.canvas = this.key;
         this.color = color;
-        
+
         this.draw();
 
         this.speed = 300;
@@ -23,7 +23,7 @@ export default class Player extends Phaser.Sprite {
 
 
     draw() {
-        new CanvasHelper(this.canvas,playerJson).drawTexture();
+        new CanvasHelper(this.canvas, playerJson).drawTexture();
     }
 
     update() {
@@ -47,7 +47,15 @@ export default class Player extends Phaser.Sprite {
         if (this.fireButton.isDown) {
             this.weapon.fire();
         }
+
+        this.pushState();
     }
+
+
+    pushState() {
+        this.game.geowar.socketHandler.push({ name: "player", id: this.game.geowar.playerId, x : this.x, y : this.y, canvas : this.canvas.canvas });
+    }
+
 
     createWeapon() {
         this.weapon = this.weaponFactory.createWeapon('dirt');

@@ -16,7 +16,6 @@ export default class Game extends Phaser.State {
 
 
     update() {
-        this.game.geowar.socketHandler.push({name: "move" , id : this.game.geowar.playerId, x : this.player.x, y : this.player.y });
     }
 
 }

@@ -20,13 +20,13 @@ export default class PlayerFactory {
         }
         switch (type) {
             case "triangle":
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, Utils.generateRandomColor(), this.weaponFactory);
+                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory);
             case "square":
-                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, Utils.generateRandomColor(), this.weaponFactory);
+                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory);
             case "circle":
-                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, Utils.generateRandomColor(), this.weaponFactory);
+                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory);
             default:
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, Utils.generateRandomColor(), this.weaponFactory);
+                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory);
         }
     }
 
@@ -36,16 +36,16 @@ export default class PlayerFactory {
        var bmd = this.game.make.bitmapData(35, 30);
        switch (type) {
             case "triangle":
-                 Player.drawPeer(bmd);   
+                 Player.drawPeer(bmd, peerMetaData.colorSet);   
                  break;
             case "square":
-                 SquarePlayer.drawPeer(bmd);
+                 SquarePlayer.drawPeer(bmd, peerMetaData.colorSet);
                  break;
             case "circle":
-                 CirclePlayer.drawPeer(bmd);
+                 CirclePlayer.drawPeer(bmd, peerMetaData.colorSet);
                  break;
             default:
-                 Player.drawPeer(bmd);
+                 Player.drawPeer(bmd, peerMetaData.colorSet);
                  break;
         }
         var sprite = this.game.add.sprite(peerMetaData.x, peerMetaData.y, bmd);   

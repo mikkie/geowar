@@ -1,12 +1,16 @@
 import CanvasHelper from '../../common/CanvasHelper.js';
 import playerJson from '../../textures/players/Player.json';
+import Utils from '../../common/Utils.js';
 
 export default class Player extends Phaser.Sprite {
 
-    constructor(game, x, y, width, height, color, weaponFactory) {
+    constructor(game, x, y, width, height, weaponFactory) {
         super(game, x, y, game.make.bitmapData(width, height));
         this.canvas = this.key;
-        this.color = color;
+        this.colorSet = {
+            head : Utils.generateRandomColor(),
+            body : Utils.generateRandomColor()
+        };
 
         this.draw();
 
@@ -23,11 +27,11 @@ export default class Player extends Phaser.Sprite {
 
 
     draw() {
-        new CanvasHelper(this.canvas, playerJson).drawTexture();
+        new CanvasHelper(this.canvas, playerJson, this.colorSet).drawTexture();
     }
 
-    static drawPeer(canvas){
-        new CanvasHelper(canvas, playerJson).drawTexture();
+    static drawPeer(canvas,colorSet){
+        new CanvasHelper(canvas, playerJson, colorSet).drawTexture();
     }
 
     update() {
@@ -57,7 +61,7 @@ export default class Player extends Phaser.Sprite {
 
 
     pushState() {
-        this.game.geowar.socketHandler.push({ name: "player", id: this.game.geowar.playerId, x : this.x, y : this.y, angle : this.angle, type : "triangle" });
+        this.game.geowar.socketHandler.push({ name: "player", id: this.game.geowar.playerId, x : this.x, y : this.y, angle : this.angle, type : "triangle", colorSet : this.colorSet});
     }
 
 

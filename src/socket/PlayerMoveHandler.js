@@ -11,12 +11,16 @@ export default class PlayerMoveHandler {
             if (!this.game.geowar.peerPlayers) {
                   this.game.geowar.peerPlayers = {};
             }
-            else if (this.game.geowar.peerPlayers[data.id]) {
-                  this.game.geowar.peerPlayers[data.id].destroy();
-                  delete this.game.geowar.peerPlayers[data.id];
+            if (this.game.geowar.peerPlayers[data.id]) {
+                var sprite = this.game.geowar.peerPlayers[data.id]; 
+                sprite.x = data.x;
+                sprite.y = data.y;
+                sprite.angle = data.angle;   
             }
-            var sprite = this.playerFactory.createPeerPlayer(data);
-            this.game.geowar.peerPlayers[data.id] = sprite;
+            else{
+                var sprite = this.playerFactory.createPeerPlayer(data);
+                this.game.geowar.peerPlayers[data.id] = sprite;
+            }
       }
 
 }

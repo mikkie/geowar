@@ -2,7 +2,7 @@ import Player from './Player.js';
 import SquarePlayer from './SquarePlayer.js';
 import CirclePlayer from './CirclePlayer.js';
 import WeaponFactory from '../weapons/WeaponFactory.js';
-import Utils from '../common/Utils.js';
+import Utils from '../../common/Utils.js';
 
 export default class PlayerFactory {
 

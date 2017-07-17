@@ -14,10 +14,4 @@ window.onload = function () {
   game.state.add('startScreen',StartScreen);
   game.state.add('game',Game);
   game.state.start('boot');
-
-  var socket = io('http://localhost:3000');
-  socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
 };

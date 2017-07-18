@@ -1,4 +1,4 @@
-import ConnectedHandler from './ConnectedHandler.js';
+import ConnectionHandler from './ConnectionHandler.js';
 import PlayerMoveHandler from './PlayerMoveHandler.js';
 
 export default class SocketHandler {
@@ -27,7 +27,7 @@ export default class SocketHandler {
 
     initHandlers(game) {
         this.handlers = {};
-        this.handlers.connected = new ConnectedHandler(game);
+        this.handlers.connection = new ConnectionHandler(game);
         this.handlers.player = new PlayerMoveHandler(game);
     }
 }

@@ -9,7 +9,7 @@ export default class SquarePlayer extends Player {
     }
 
     pushState() {
-        this.game.geowar.socketHandler.push({ name: "player", id: this.game.geowar.playerId, x : this.x, y : this.y, angle : this.angle, type : "square", colorSet : this.colorSet });
+        this.game.geowar.socketHandler.push({ name: "playerMove", id: this.playerId, x : this.x, y : this.y, angle : this.angle, type : "square", colorSet : this.colorSet });
     }
 
 }

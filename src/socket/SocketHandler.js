@@ -28,6 +28,6 @@ export default class SocketHandler {
     initHandlers(game) {
         this.handlers = {};
         this.handlers.connection = new ConnectionHandler(game);
-        this.handlers.player = new PlayerMoveHandler(game);
+        this.handlers.playerMove = new PlayerMoveHandler(game);
     }
 }

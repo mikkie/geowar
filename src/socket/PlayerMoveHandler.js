@@ -8,11 +8,8 @@ export default class PlayerMoveHandler {
       }
 
       handle(data) {
-            if (!this.game.geowar.peerPlayers) {
-                  this.game.geowar.peerPlayers = {};
-            }
-            if (this.game.geowar.peerPlayers[data.id]) {
-                var peerPlayer = this.game.geowar.peerPlayers[data.id]; 
+            if (this.game.geowar.players[data.id]) {
+                var peerPlayer = this.game.geowar.players[data.id]; 
                 peerPlayer.x = data.x;
                 peerPlayer.y = data.y;
                 peerPlayer.angle = data.angle;   
@@ -20,8 +17,9 @@ export default class PlayerMoveHandler {
             else{
                 var peerPlayer = this.playerFactory.createPeerPlayer(data);
                 this.game.add.existing(peerPlayer);
+                this.game.geowar.playersGroup.add(peerPlayer);
                 //cache peer player
-                this.game.geowar.peerPlayers[data.id] = peerPlayer;
+                this.game.geowar.players[data.id] = peerPlayer;
             }
       }
 

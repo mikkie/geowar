@@ -59,13 +59,14 @@ export default class Player extends Phaser.Sprite {
                 this.weapon.fire();
             }
 
-            this.pushState();
         }
+        
+        this.pushState();
     }
 
 
     pushState() {
-        this.game.geowar.socketHandler.push({ name: "player", id: this.game.geowar.playerId, x: this.x, y: this.y, angle: this.angle, type: "triangle", colorSet: this.colorSet });
+        this.game.geowar.socketHandler.push({ name: "playerMove", id: this.playerId, x: this.x, y: this.y, angle: this.angle, type: "triangle", colorSet: this.colorSet });
     }
 
 

@@ -33,16 +33,23 @@ export default class PlayerFactory {
 
     createPeerPlayer(peerMetaData){
        var type = peerMetaData.type;
+       var player = null;
        switch (type) {
             case "triangle":
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                break;
             case "square":
-                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                break;
             case "circle":
-                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                break;
             default:
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                break;
         }
+        player.playerId = peerMetaData.id;
+        return player;
     }
 
 }

@@ -5,20 +5,31 @@ export default class ConnectionHandler {
       }
 
       handle(data) {
+            if (!this.game.geowar.players) {
+                  this.game.geowar.players = {};
+            }
             if (data.type === 'connected') {
                   this.game.geowar.socketReady = true;
-                  this.game.geowar.playerId = data.id;
-                  console.log('playerId = ' + this.game.geowar.playerId + ' connected');
+                  //set current player id
+                  this.game.geowar.currentPlayer.playerId = data.id;
+                  //add to player map
+                  this.game.geowar.players[data.id] = this.game.geowar.currentPlayer;
+                  console.log('playerId = ' + this.game.geowar.currentPlayer.playerId + ' connected');
             }
             else if (data.type === 'disconnected') {
-                  if (this.game.geowar.playerId == data.id) {
+                  var needDestroy = true;
+                  if (this.game.geowar.currentPlayer.playerId == data.id) {
+                        needDestroy = false;
                         this.game.geowar.socketReady = false;
-                        console.log('playerId = ' + this.game.geowar.playerId + 'disconnected');
+                        console.log('playerId = ' + this.game.geowar.currentPlayer.playerId + 'disconnected');
                   }
-                  else if (this.game.geowar.peerPlayers[data.id]) {
-                        this.game.geowar.peerPlayers[data.id].destroy();
-                        delete this.game.geowar.peerPlayers[data.id];
+                  if (this.game.geowar.players[data.id]) {
+                        if (needDestroy) {
+                              this.game.geowar.players[data.id].destroy();
+                        }
+                        delete this.game.geowar.players[data.id];
                   }
+
             }
       }
 

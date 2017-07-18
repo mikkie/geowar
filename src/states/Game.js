@@ -10,20 +10,22 @@ export default class Game extends Phaser.State {
         this.game.stage.backgroundColor = '#282626';
         //factories
         this.playerFactory = new PlayerFactory(this.game);
-        this.game.geowar.socketHandler = new SocketHandler(io('http://localhost:3000'), this.game);
+        //player group
+        var playersGroup = this.game.add.group();
+        this.game.geowar.playersGroup = playersGroup;
         //player
         this.player = this.playerFactory.createPlayer();
         this.game.add.existing(this.player);
+        playersGroup.add(this.player);
+        //cache current player
+        this.game.geowar.currentPlayer = this.player;
+        //set up socket
+        this.game.geowar.socketHandler = new SocketHandler(io('http://localhost:3000'), this.game);
     }
 
 
     update() {
-        var peerPlayers = this.game.geowar.peerPlayers;
-        if(peerPlayers){
-           for(var k in peerPlayers){
-              this.game.physics.arcade.collide(this.player,peerPlayers[k],null,null);
-           }
-        }
+        this.game.physics.arcade.collide(this.game.geowar.playersGroup, this.game.geowar.playersGroup,null, null);
     }
 
 }

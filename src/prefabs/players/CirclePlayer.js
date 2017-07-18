@@ -12,8 +12,4 @@ export default class CirclePlayer extends Player {
         this.game.geowar.socketHandler.push({ name: "player", id: this.game.geowar.playerId, x : this.x, y : this.y, angle : this.angle, type : "circle", colorSet : this.colorSet });
     }
 
-    static drawPeer(canvas,colorSet){
-        new CanvasHelper(canvas, playerJson,colorSet).drawTexture();
-    }
-
 }

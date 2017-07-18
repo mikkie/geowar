@@ -20,38 +20,29 @@ export default class PlayerFactory {
         }
         switch (type) {
             case "triangle":
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory);
+                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, null, true);
             case "square":
-                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory);
+                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, null, true);
             case "circle":
-                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory);
+                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, null, true);
             default:
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory);
+                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, null, true);
         }
     }
 
 
     createPeerPlayer(peerMetaData){
        var type = peerMetaData.type;
-       var bmd = this.game.make.bitmapData(35, 30);
        switch (type) {
             case "triangle":
-                 Player.drawPeer(bmd, peerMetaData.colorSet);   
-                 break;
+                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
             case "square":
-                 SquarePlayer.drawPeer(bmd, peerMetaData.colorSet);
-                 break;
+                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
             case "circle":
-                 CirclePlayer.drawPeer(bmd, peerMetaData.colorSet);
-                 break;
+                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
             default:
-                 Player.drawPeer(bmd, peerMetaData.colorSet);
-                 break;
+                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
         }
-        var sprite = this.game.add.sprite(peerMetaData.x, peerMetaData.y, bmd);   
-        sprite.angle = peerMetaData.angle;
-        sprite.anchor.setTo(0.5, 0.5);
-        return sprite;   
     }
 
 }

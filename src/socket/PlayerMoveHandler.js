@@ -12,14 +12,16 @@ export default class PlayerMoveHandler {
                   this.game.geowar.peerPlayers = {};
             }
             if (this.game.geowar.peerPlayers[data.id]) {
-                var sprite = this.game.geowar.peerPlayers[data.id]; 
-                sprite.x = data.x;
-                sprite.y = data.y;
-                sprite.angle = data.angle;   
+                var peerPlayer = this.game.geowar.peerPlayers[data.id]; 
+                peerPlayer.x = data.x;
+                peerPlayer.y = data.y;
+                peerPlayer.angle = data.angle;   
             }
             else{
-                var sprite = this.playerFactory.createPeerPlayer(data);
-                this.game.geowar.peerPlayers[data.id] = sprite;
+                var peerPlayer = this.playerFactory.createPeerPlayer(data);
+                this.game.add.existing(peerPlayer);
+                //cache peer player
+                this.game.geowar.peerPlayers[data.id] = peerPlayer;
             }
       }
 

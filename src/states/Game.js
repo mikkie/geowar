@@ -18,6 +18,12 @@ export default class Game extends Phaser.State {
 
 
     update() {
+        var peerPlayers = this.game.geowar.peerPlayers;
+        if(peerPlayers){
+           for(var k in peerPlayers){
+              this.game.physics.arcade.collide(this.player,peerPlayers[k],null,null);
+           }
+        }
     }
 
 }

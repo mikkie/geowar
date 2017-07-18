@@ -4,13 +4,19 @@ import Utils from '../../common/Utils.js';
 
 export default class Player extends Phaser.Sprite {
 
-    constructor(game, x, y, width, height, weaponFactory) {
+    constructor(game, x, y, width, height, weaponFactory, colorSet, needControl) {
         super(game, x, y, game.make.bitmapData(width, height));
         this.canvas = this.key;
-        this.colorSet = {
-            head : Utils.generateRandomColor(),
-            body : Utils.generateRandomColor()
-        };
+        this.needControl = needControl;
+        if (colorSet) {
+            this.colorSet = colorSet;
+        }
+        else {
+            this.colorSet = {
+                head: Utils.generateRandomColor(),
+                body: Utils.generateRandomColor()
+            };
+        }
 
         this.draw();
 
@@ -30,38 +36,36 @@ export default class Player extends Phaser.Sprite {
         new CanvasHelper(this.canvas, playerJson, this.colorSet).drawTexture();
     }
 
-    static drawPeer(canvas,colorSet){
-        new CanvasHelper(canvas, playerJson, colorSet).drawTexture();
-    }
-
     update() {
-        this.body.velocity.x = 0;
-        this.body.velocity.y = 0;
-        this.body.angularVelocity = 0;
+        if (this.needControl) {
+            this.body.velocity.x = 0;
+            this.body.velocity.y = 0;
+            this.body.angularVelocity = 0;
 
-        if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-            this.body.angularVelocity = -200;
-        }
-        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-            this.body.angularVelocity = 200;
-        }
-        if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-            this.game.physics.arcade.velocityFromAngle(this.angle, 300, this.body.velocity);
-        }
-        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-            this.game.physics.arcade.velocityFromAngle(this.angle, 300, this.body.velocity);
-        }
+            if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+                this.body.angularVelocity = -200;
+            }
+            else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+                this.body.angularVelocity = 200;
+            }
+            if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+                this.game.physics.arcade.velocityFromAngle(this.angle, 300, this.body.velocity);
+            }
+            else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
+                this.game.physics.arcade.velocityFromAngle(this.angle + 180, 300, this.body.velocity);
+            }
 
-        if (this.fireButton.isDown) {
-            this.weapon.fire();
-        }
+            if (this.fireButton.isDown) {
+                this.weapon.fire();
+            }
 
-        this.pushState();
+            this.pushState();
+        }
     }
 
 
     pushState() {
-        this.game.geowar.socketHandler.push({ name: "player", id: this.game.geowar.playerId, x : this.x, y : this.y, angle : this.angle, type : "triangle", colorSet : this.colorSet});
+        this.game.geowar.socketHandler.push({ name: "player", id: this.game.geowar.playerId, x: this.x, y: this.y, angle: this.angle, type: "triangle", colorSet: this.colorSet });
     }
 
 

@@ -25,7 +25,7 @@ export default class Player extends Phaser.Sprite {
         this.anchor.setTo(0.5, 0.5);
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
         this.body.collideWorldBounds = true;
-        this.body.drag.set(60);
+        this.body.drag.set(150);
 
         this.weaponFactory = weaponFactory;
         this.createWeapon();

@@ -20,13 +20,13 @@ export default class PlayerFactory {
         }
         switch (type) {
             case "triangle":
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, null, true);
+                return new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true);
             case "square":
-                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, null, true);
+                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true);
             case "circle":
-                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, null, true);
+                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true);
             default:
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, null, true);
+                return new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true);
         }
     }
 
@@ -36,16 +36,16 @@ export default class PlayerFactory {
        var player = null;
        switch (type) {
             case "triangle":
-                player = new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
             case "square":
-                player = new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
             case "circle":
-                player = new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
             default:
-                player = new Player(this.game, this.game.width / 2, this.game.height / 2, 35, 30, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
         }
         player.playerId = peerMetaData.id;

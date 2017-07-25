@@ -20,15 +20,10 @@ export default class Player extends Phaser.Sprite {
 
         this.draw();
 
-        this.speed = 300;
-        this.angle = -90;
-        this.anchor.setTo(0.5, 0.5);
-        this.game.physics.enable(this, Phaser.Physics.ARCADE);
-        this.body.collideWorldBounds = true;
-        this.body.drag.set(150);
-
-        this.weaponFactory = weaponFactory;
-        this.createWeapon();
+        this.game.physics.p2.enable(this);
+        this.anchor.setTo(0.5, 0.57);
+        // this.weaponFactory = weaponFactory;
+        // this.createWeapon();
     }
 
 
@@ -38,29 +33,29 @@ export default class Player extends Phaser.Sprite {
 
     update() {
         if (this.needControl) {
-            this.body.velocity.x = 0;
-            this.body.velocity.y = 0;
-            this.body.angularVelocity = 0;
 
             if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-                this.body.angularVelocity = -200;
+                this.body.rotateLeft(100);
             }
             else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                this.body.angularVelocity = 200;
+                this.body.rotateRight(100);
+            }
+            else {
+                this.body.setZeroRotation();
             }
             if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-                this.game.physics.arcade.velocityFromAngle(this.angle, 300, this.body.velocity);
+                this.body.thrust(400);
             }
             else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-                this.game.physics.arcade.velocityFromAngle(this.angle + 180, 300, this.body.velocity);
+                this.body.reverse(400);
             }
 
-            if (this.fireButton.isDown) {
+            /*if (this.fireButton.isDown) {
                 this.weapon.fire();
-            }
+            }*/
 
         }
-        
+
         this.pushState();
     }
 
@@ -70,12 +65,12 @@ export default class Player extends Phaser.Sprite {
     }
 
 
-    createWeapon() {
+    /*createWeapon() {
         this.weapon = this.weaponFactory.createWeapon('dirt');
 
-        this.weapon.trackSprite(this, this.width / 2 + 5, 0, true);
+        this.weapon.trackSprite(this, 0, (this.width/2 + 5) * -1, true);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-    }
+    }*/
 
 }

@@ -6,7 +6,7 @@ export default class Game extends Phaser.State {
 
     create() {
         //stage
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.stage.backgroundColor = '#282626';
         //factories
         this.playerFactory = new PlayerFactory(this.game);
@@ -25,7 +25,6 @@ export default class Game extends Phaser.State {
 
 
     update() {
-        this.game.physics.arcade.collide(this.game.geowar.playersGroup, this.game.geowar.playersGroup,null, null);
     }
 
 }

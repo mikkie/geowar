@@ -7,13 +7,13 @@
         "draw": [
             {
                 "drawType": "move",
-                "x": "${canvas.height}",
-                "y": "${canvas.height/2}"
+                "x": "${canvas.width/2}",
+                "y": "0"
             },
             {
                 "drawType": "line",
-                "x": "${canvas.width}",
-                "y": "${canvas.height/2}"
+                "x": "${canvas.width/2}",
+                "y": "${canvas.height - canvas.width}"
             }
         ]
     },
@@ -22,17 +22,17 @@
         "draw": [
             {
                 "drawType": "move",
-                "x": "0",
-                "y": "0"
-            },
-            {
-                "drawType": "line",
-                "x": "${canvas.height}",
-                "y": "${canvas.height/2}"
+                "x": "${canvas.width/2}",
+                "y": "${canvas.height - canvas.width}"
             },
             {
                 "drawType": "line",
                 "x": "0",
+                "y": "${canvas.height}"
+            },
+            {
+                "drawType": "line",
+                "x": "${canvas.width}",
                 "y": "${canvas.height}"
             }
         ]

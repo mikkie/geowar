@@ -31,6 +31,7 @@ export default class Weapon {
 
         //  Add a variance to the bullet speed by +- this value
         this.weapon.bulletSpeedVariance = 200;
+
     }
 
 

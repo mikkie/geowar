@@ -7,13 +7,13 @@
         "draw": [
             {
                 "drawType": "move",
-                "x": "${canvas.height}",
-                "y": "${canvas.height/2}"
+                "x": "${canvas.width/2}",
+                "y": "0"
             },
             {
                 "drawType": "line",
-                "x": "${canvas.width}",
-                "y": "${canvas.height/2}"
+                "x": "${canvas.width/2}",
+                "y": "${canvas.height - canvas.width}"
             }
         ]
     },
@@ -22,9 +22,9 @@
         "draw": [
             {
                 "drawType": "arc",
-                "x": "15",
-                "y": "15",
-                "radius" : "14",
+                "x": "${canvas.width/2}",
+                "y": "${canvas.height - canvas.width + (canvas.width/2)}",
+                "radius" : "${canvas.width/2 - 1}",
                 "arc" : "${2 * Math.PI}"
             },
         ]

@@ -6,6 +6,8 @@ export default class Player extends Phaser.Sprite {
 
     constructor(game, x, y, width, height, weaponFactory, colorSet, needControl) {
         super(game, x, y, game.make.bitmapData(width, height));
+        this.width = width;
+        this.height = height;
         this.canvas = this.key;
         this.needControl = needControl;
         if (colorSet) {
@@ -22,8 +24,8 @@ export default class Player extends Phaser.Sprite {
 
         this.game.physics.p2.enable(this);
         this.anchor.setTo(0.5, 0.57);
-        // this.weaponFactory = weaponFactory;
-        // this.createWeapon();
+        this.weaponFactory = weaponFactory;
+        this.createWeapon();
     }
 
 
@@ -35,24 +37,24 @@ export default class Player extends Phaser.Sprite {
         if (this.needControl) {
 
             if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-                this.body.rotateLeft(100);
+                this.body.rotateLeft(50);
             }
             else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                this.body.rotateRight(100);
+                this.body.rotateRight(50);
             }
             else {
                 this.body.setZeroRotation();
             }
             if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-                this.body.thrust(400);
+                this.body.thrust(300);
             }
             else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-                this.body.reverse(400);
+                this.body.reverse(300);
             }
 
-            /*if (this.fireButton.isDown) {
-                this.weapon.fire();
-            }*/
+            if (this.fireButton.isDown) {
+                this.weapon.fire(this);
+            }
             
             //only push current player data to server and use socket.io to broadcase to peer players
             this.pushState();
@@ -74,12 +76,12 @@ export default class Player extends Phaser.Sprite {
     }
 
 
-    /*createWeapon() {
-        this.weapon = this.weaponFactory.createWeapon('dirt');
+    createWeapon() {
+        this.weapon = this.weaponFactory.createWeapon('basic');
 
-        this.weapon.trackSprite(this, 0, (this.width/2 + 5) * -1, true);
+        // this.weapon.trackSprite(this, 0, (this.width/2 + 5) * -1, true);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-    }*/
+    }
 
 }

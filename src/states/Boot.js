@@ -5,7 +5,9 @@ export default class Boot {
 
     create() {
         //namespace
-        this.game.geowar = {}; 
+        this.game.geowar = {
+            server : 'http://192.168.1.20:3000'
+        }; 
         this.game.input.maxPointers = 1;
         //make sure the game running even loose focus
         this.game.stage.disableVisibilityChange = true;

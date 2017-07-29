@@ -20,7 +20,7 @@ export default class Game extends Phaser.State {
         //cache current player
         this.game.geowar.currentPlayer = this.player;
         //set up socket
-        this.game.geowar.socketHandler = new SocketHandler(io('http://192.168.1.20:3000'), this.game);
+        this.game.geowar.socketHandler = new SocketHandler(io(this.game.geowar.server), this.game);
     }
 
 

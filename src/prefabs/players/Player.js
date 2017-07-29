@@ -53,10 +53,19 @@ export default class Player extends Phaser.Sprite {
             /*if (this.fireButton.isDown) {
                 this.weapon.fire();
             }*/
-
+            
+            //only push current player data to server and use socket.io to broadcase to peer players
+            this.pushState();
+        }
+        //update peer player pos by data from socket.io
+        else if(this.game.geowar.players[this.playerId] && this.game.geowar.players[this.playerId].pos){
+             var pos = this.game.geowar.players[this.playerId].pos;
+             this.body.x = pos.x;
+             this.body.y = pos.y;
+             this.body.angle = pos.angle;
         }
 
-        this.pushState();
+        
     }
 
 

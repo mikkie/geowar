@@ -10,16 +10,21 @@ export default class PlayerMoveHandler {
       handle(data) {
             if (this.game.geowar.players[data.id]) {
                 var peerPlayer = this.game.geowar.players[data.id]; 
-                peerPlayer.x = data.x;
-                peerPlayer.y = data.y;
-                peerPlayer.angle = data.angle;   
+                //cache the peer player pos meta data and update in update method. 
+                peerPlayer.pos = {
+                    x : data.x,
+                    y : data.y,
+                    angle : data.angle
+                };
             }
             else{
                 var peerPlayer = this.playerFactory.createPeerPlayer(data);
                 this.game.add.existing(peerPlayer);
                 this.game.geowar.playersGroup.add(peerPlayer);
                 //cache peer player
-                this.game.geowar.players[data.id] = peerPlayer;
+                this.game.geowar.players[data.id] = {
+                     sprite : peerPlayer 
+                };
             }
       }
 

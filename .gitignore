@@ -2,3 +2,4 @@
 /bower_components/
 /.git/
 /build/
+/scripts/app.js

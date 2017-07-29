@@ -36,16 +36,16 @@ export default class PlayerFactory {
        var player = null;
        switch (type) {
             case "triangle":
-                player = new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new Player(this.game, peerMetaData.x, peerMetaData.y, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
             case "square":
-                player = new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new SquarePlayer(this.game, peerMetaData.x, peerMetaData.y, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
             case "circle":
-                player = new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new CirclePlayer(this.game, peerMetaData.x, peerMetaData.y, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
             default:
-                player = new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
+                player = new Player(this.game, peerMetaData.x, peerMetaData.y, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
         }
         player.playerId = peerMetaData.id;

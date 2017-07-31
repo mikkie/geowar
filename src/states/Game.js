@@ -13,6 +13,11 @@ export default class Game extends Phaser.State {
         //player group
         var playersGroup = this.game.add.group();
         this.game.geowar.playersGroup = playersGroup;
+        //collision group
+        this.game.geowar.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
+        this.game.geowar.bulletCollisionGroup = this.game.physics.p2.createCollisionGroup();
+        //after create new collision group update the group to collide with bounds 
+        this.game.physics.p2.updateBoundsCollisionGroup();
         //player
         this.player = this.playerFactory.createPlayer();
         this.game.add.existing(this.player);

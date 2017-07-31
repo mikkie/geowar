@@ -24,9 +24,24 @@ export default class Player extends Phaser.Sprite {
 
         this.game.physics.p2.enable(this);
         this.anchor.setTo(0.5, 0.57);
+        this.collideSetting();
         this.weaponFactory = weaponFactory;
         this.createWeapon();
     }
+
+
+    collideSetting(){
+       this.body.setCollisionGroup(this.game.geowar.playerCollisionGroup);
+       this.body.collides([this.game.geowar.bulletCollisionGroup,this.game.geowar.playerCollisionGroup]);
+       this.body.onBeginContact.add(this.contact);
+    }
+
+
+    contact(otherBody) {
+        if (otherBody && otherBody.sprite && otherBody.sprite.isBullet) {
+            otherBody.sprite.kill();
+        }
+    };
 
 
     draw() {
@@ -82,6 +97,10 @@ export default class Player extends Phaser.Sprite {
         // this.weapon.trackSprite(this, 0, (this.width/2 + 5) * -1, true);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+    }
+
+    isCurrentPlayer(){
+        return this.needControl;
     }
 
 }

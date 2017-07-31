@@ -6,7 +6,7 @@ export default class Boot {
     create() {
         //namespace
         this.game.geowar = {
-            server : 'http://192.168.1.4:3000'
+            server : 'http://localhost:3000'
         }; 
         this.game.input.maxPointers = 1;
         //make sure the game running even loose focus

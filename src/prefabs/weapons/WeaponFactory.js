@@ -10,14 +10,14 @@ export default class WeaponFactory {
     }
 
 
-    createWeapon(type) {
+    createWeapon(type,player) {
         switch(type){
             case "basic" : 
-               return new Weapon(this.game);
+               return new Weapon(this.game,player);
             case "dirt" : 
-               return new DirtWeapon(this.game);
+               return new DirtWeapon(this.game,player);
             default : 
-               return new Weapon(this.game);
+               return new Weapon(this.game,player);
         } 
     }
 

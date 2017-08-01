@@ -30,16 +30,18 @@ export default class Player extends Phaser.Sprite {
     }
 
 
-    collideSetting(){
-       this.body.setCollisionGroup(this.game.geowar.playerCollisionGroup);
-       this.body.collides([this.game.geowar.bulletCollisionGroup,this.game.geowar.playerCollisionGroup]);
-       this.body.onBeginContact.add(this.contact);
+    collideSetting() {
+        this.body.setCollisionGroup(this.game.geowar.playerCollisionGroup);
+        this.body.collides([this.game.geowar.bulletCollisionGroup, this.game.geowar.playerCollisionGroup]);
+        this.body.onBeginContact.add(this.contact);
     }
 
 
     contact(otherBody) {
         if (otherBody && otherBody.sprite && otherBody.sprite.isBullet) {
-            otherBody.sprite.kill();
+            if(otherBody.sprite.player != this){
+               otherBody.sprite.kill();
+            }    
         }
     };
 
@@ -69,38 +71,54 @@ export default class Player extends Phaser.Sprite {
 
             if (this.fireButton.isDown) {
                 this.weapon.fire(this);
+                this.pushState({ name: "playerFire", id: this.playerId });
             }
-            
+
+            this.pushState({ name: "playerMove", id: this.playerId, x: this.x, y: this.y, angle: this.angle, type: this.getType(), colorSet: this.colorSet });
             //only push current player data to server and use socket.io to broadcase to peer players
-            this.pushState();
         }
         //update peer player pos by data from socket.io
-        else if(this.game.geowar.players[this.playerId] && this.game.geowar.players[this.playerId].pos){
-             var pos = this.game.geowar.players[this.playerId].pos;
-             this.body.x = pos.x;
-             this.body.y = pos.y;
-             this.body.angle = pos.angle;
+        else if (this.game.geowar.players[this.playerId]) {
+            if (this.game.geowar.players[this.playerId].pos) {
+                var pos = this.game.geowar.players[this.playerId].pos;
+                this.body.x = pos.x;
+                this.body.y = pos.y;
+                this.body.angle = pos.angle;
+            }
+            if (this.game.geowar.players[this.playerId].fire) {
+                this.weapon.fire(this);
+                this.game.geowar.players[this.playerId].fire = false;
+            }
         }
-
-        
     }
 
 
-    pushState() {
-        this.game.geowar.socketHandler.push({ name: "playerMove", id: this.playerId, x: this.x, y: this.y, angle: this.angle, type: "triangle", colorSet: this.colorSet });
+    getType(){
+        return "triangle";
+    }
+
+
+    pushState(data) {
+        this.game.geowar.socketHandler.push(data);
     }
 
 
     createWeapon() {
-        this.weapon = this.weaponFactory.createWeapon('basic');
+        this.weapon = this.weaponFactory.createWeapon('basic',this);
 
         // this.weapon.trackSprite(this, 0, (this.width/2 + 5) * -1, true);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     }
 
-    isCurrentPlayer(){
+    isCurrentPlayer() {
         return this.needControl;
+    }
+
+
+    destroy(destroyChildren, destroyTexture){
+        super.destroy(destroyChildren, destroyTexture);
+        this.weapon.destroy();
     }
 
 }

@@ -4,8 +4,9 @@ import weaponJson from '../../textures/weapons/weapon.json';
 
 export default class Weapon {
 
-    constructor(game) {
+    constructor(game,player) {
         this.game = game;
+        this.player = player;
         this.speed = 500;
         this.shotInterval = 50;
         this.bulletGate = 0;
@@ -20,23 +21,26 @@ export default class Weapon {
     }
 
 
-    fire(player) {
+    fire() {
         if (this.game.time.now > this.bulletGate) {
             var bullet = this.bulletGroup.getFirstDead();
-            var pos = this.initBulletPosition(player);
+            var pos = this.initBulletPosition();
             if (bullet) {                   
-                bullet.x = pos.x;
-                bullet.y = pos.y;
+                bullet.body.x = pos.x;
+                bullet.body.y = pos.y;
+                var v = this.initBulletVelocity();
+                bullet.body.velocity.x = v.x;
+                bullet.body.velocity.y = v.y;
                 bullet.revive();
             }
             else {
-                bullet = this.bulletGroup.create(pos.x, pos.y, this.bmd);
+                var bullet = this.bulletGroup.create(pos.x, pos.y, this.bmd);
                 bullet.isBullet = true;
                 this.game.physics.p2.enable(bullet);
                 bullet.checkWorldBounds = true;
                 bullet.body.collideWorldBounds = false;
                 bullet.events.onOutOfBounds.add(this.bulletOutOfBounds, this);
-                var v = this.initBulletVelocity(player);
+                var v = this.initBulletVelocity();
                 bullet.body.velocity.x = v.x;
                 bullet.body.velocity.y = v.y;
                 this.collideSetting(bullet);
@@ -49,14 +53,14 @@ export default class Weapon {
     collideSetting(bullet) {
         bullet.body.setCollisionGroup(this.game.geowar.bulletCollisionGroup);
         bullet.body.collides([this.game.geowar.playerCollisionGroup, this.game.geowar.bulletCollisionGroup]);
-        bullet.body.onBeginContact.add(this.bulletContact);
+        bullet.body.onBeginContact.add(this.bulletContact,this);
     };
 
     bulletContact(otherBody) {
         //only kill the player
-        if (otherBody && otherBody.sprite && typeof otherBody.sprite.isCurrentPlayer == 'function') {
-            if (!otherBody.sprite.isCurrentPlayer()) {
-                otherBody.sprite.kill();
+        if (otherBody && otherBody.sprite && typeof /Player/i.test(otherBody.sprite.constructor.name)) {
+            if (otherBody.sprite != this.player){
+                otherBody.sprite.destroy();
             }
         }
     };
@@ -67,8 +71,8 @@ export default class Weapon {
     };
 
 
-    initBulletVelocity(player) {
-        var angle = player.body.angle;
+    initBulletVelocity() {
+        var angle = this.player.body.angle;
         var v = 400;
         var x = Math.sin(angle * Math.PI / 180) * this.speed;
         var y = Math.cos(angle * Math.PI / 180) * this.speed * -1;
@@ -79,15 +83,20 @@ export default class Weapon {
     };
 
 
-    initBulletPosition(player) {
-        var headToBodyCenter = player.width / 2 + 5;
-        var angle = player.body.angle;
-        var x = player.x + Math.sin(angle * Math.PI / 180) * headToBodyCenter;
-        var y = player.y - Math.cos(angle * Math.PI / 180) * headToBodyCenter;
+    initBulletPosition() {
+        var headToBodyCenter = this.player.width / 2 + 5;
+        var angle = this.player.body.angle;
+        var x = this.player.x + Math.sin(angle * Math.PI / 180) * headToBodyCenter;
+        var y = this.player.y - Math.cos(angle * Math.PI / 180) * headToBodyCenter;
         return {
             x: x,
             y: y
         };
     };
+
+
+    destroy(){
+        this.bulletGroup.destroy();
+    }
 
 }

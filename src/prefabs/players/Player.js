@@ -40,6 +40,7 @@ export default class Player extends Phaser.Sprite {
     contact(otherBody) {
         if (otherBody && otherBody.sprite && otherBody.sprite.isBullet) {
             if(otherBody.sprite.player != this){
+                //kill for reuse bullet
                otherBody.sprite.kill();
             }    
         }
@@ -118,6 +119,7 @@ export default class Player extends Phaser.Sprite {
 
     destroy(destroyChildren, destroyTexture){
         super.destroy(destroyChildren, destroyTexture);
+        //coz the weapon not children, need to destory too
         this.weapon.destroy();
     }
 

@@ -17,7 +17,7 @@ export default class Weapon {
 
     createBullet() {
         this.bmd = this.game.make.bitmapData(12, 12);
-        new CanvasHelper(this.bmd, weaponJson).drawTexture();
+        new CanvasHelper(this.bmd, weaponJson, {body : this.player.colorSet.head}).drawTexture();
     }
 
 

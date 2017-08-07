@@ -1,7 +1,6 @@
 import ConnectionHandler from './ConnectionHandler.js';
 import PlayerMoveHandler from './PlayerMoveHandler.js';
 import PlayerFireHandler from './PlayerFireHandler.js';
-import CommonHandler from './CommonHandler.js';
 
 export default class SocketHandler {
     constructor(sio, game) {
@@ -32,6 +31,5 @@ export default class SocketHandler {
         this.handlers.connection = new ConnectionHandler(game);
         this.handlers.playerMove = new PlayerMoveHandler(game);
         this.handlers.playerFire = new PlayerFireHandler(game);
-        this.handlers.common = new CommonHandler(game);
     }
 }

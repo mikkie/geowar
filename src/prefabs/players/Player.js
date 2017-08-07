@@ -104,10 +104,6 @@ export default class Player extends Phaser.Sprite {
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     }
 
-    isCurrentPlayer() {
-        return this.needControl;
-    }
-
 
     destroy(destroyChildren, destroyTexture){
         super.destroy(destroyChildren, destroyTexture);

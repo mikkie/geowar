@@ -22,9 +22,9 @@ export default class BackgroundFactory {
 
     createBasicBackground(number, worldWidth, worldHeight) {
         for (var i = 0; i < number; i++) {
-            var x = Math.floor(Math.random() * (worldWidth - 100));
-            var y = Math.floor(Math.random() * (worldHeight - 100));
-            var background = new BasicBackground(x, y, 100, 100, this.game);
+            var x = Math.floor(Math.random() * (worldWidth - 200));
+            var y = Math.floor(Math.random() * (worldHeight - 200));
+            var background = new BasicBackground(x, y, 200, 200, this.game);
             this.game.add.existing(background);
         }
     }

@@ -61,7 +61,7 @@ export default class CanvasHelper {
 
 
     parseExpress(pos) {
-        if (isNaN(pos) && /\$\{.*\}/.test(pos)) {
+        if (/\$\{.*\}/.test(pos)) {
             pos = pos.replace(/canvas.height/gi, this.canvas.height).replace(/canvas.width/gi, this.canvas.width);
             pos = pos.substring(2, pos.length - 1);
             pos = eval(pos);

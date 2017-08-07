@@ -8,8 +8,4 @@ export default class SquarePlayer extends Player {
         new CanvasHelper(this.canvas,playerJson,this.colorSet).drawTexture();
     }
 
-    getType(){
-        return "square";
-    }
-
 }

@@ -35,13 +35,13 @@ export default class PlayerFactory {
        var type = peerMetaData.type;
        var player = null;
        switch (type) {
-            case "triangle":
+            case "Player":
                 player = new Player(this.game, peerMetaData.x, peerMetaData.y, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
-            case "square":
+            case "SquarePlayer":
                 player = new SquarePlayer(this.game, peerMetaData.x, peerMetaData.y, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
-            case "circle":
+            case "CirclePlayer":
                 player = new CirclePlayer(this.game, peerMetaData.x, peerMetaData.y, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
             default:

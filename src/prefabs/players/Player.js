@@ -75,7 +75,7 @@ export default class Player extends Phaser.Sprite {
                 this.pushState({ name: "playerFire", id: this.playerId });
             }
 
-            this.pushState({ name: "playerMove", id: this.playerId, x: this.x, y: this.y, angle: this.angle, type: this.getType(), colorSet: this.colorSet });
+            this.pushState({ name: "playerMove", id: this.playerId, x: this.x, y: this.y, angle: this.angle, type: this.constructor.name, colorSet: this.colorSet });
             //only push current player data to server and use socket.io to broadcase to peer players
         }
         //update peer player pos by data from socket.io
@@ -93,12 +93,6 @@ export default class Player extends Phaser.Sprite {
         }
     }
 
-
-    getType(){
-        return "triangle";
-    }
-
-
     pushState(data) {
         this.game.geowar.socketHandler.push(data);
     }
@@ -106,8 +100,6 @@ export default class Player extends Phaser.Sprite {
 
     createWeapon() {
         this.weapon = this.weaponFactory.createWeapon('basic',this);
-
-        // this.weapon.trackSprite(this, 0, (this.width/2 + 5) * -1, true);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     }

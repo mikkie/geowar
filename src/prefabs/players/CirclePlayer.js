@@ -8,8 +8,4 @@ export default class CirclePlayer extends Player {
         new CanvasHelper(this.canvas,playerJson,this.colorSet).drawTexture();
     }
 
-    getType(){
-        return "circle";
-    }
-
 }

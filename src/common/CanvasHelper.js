@@ -28,6 +28,13 @@ export default class CanvasHelper {
                     var arc = this.parseExpress(part.arc);
                     this.ctx.arc(x, y, radius, 0, arc, false);
                 }
+                else if(part.drawType == 'fillRect'){
+                    var x = this.parseExpress(part.x);
+                    var y = this.parseExpress(part.y);
+                    var width = this.parseExpress(part.width);
+                    var height = this.parseExpress(part.height);
+                    this.ctx.fillRect(x, y, width, height);
+                }
             }
             this.ctx.closePath();
             if (this.texture[key].style == 'stroke') {

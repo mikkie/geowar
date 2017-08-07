@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         }
     },
     watch: {
-      files: [ 'src/**/*.js' ],
+      files: [ 'src/**/*.js','src/**/*.json' ],
       tasks: ['browserify'],
       options: {
           spawn: false,

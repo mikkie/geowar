@@ -75,7 +75,7 @@ export default class Player extends Phaser.Sprite {
                 this.pushState({ name: "playerFire", id: this.playerId });
             }
 
-            this.pushState({ name: "playerMove", id: this.playerId, x: this.x, y: this.y, angle: this.angle, type: this.constructor.name, colorSet: this.colorSet });
+            this.pushState({ name: "playerMove", id: this.playerId, x: this.x, y: this.y, angle: this.angle, type: this.getType(), colorSet: this.colorSet });
             //only push current player data to server and use socket.io to broadcase to peer players
         }
         //update peer player pos by data from socket.io
@@ -109,6 +109,10 @@ export default class Player extends Phaser.Sprite {
         super.destroy(destroyChildren, destroyTexture);
         //coz the weapon not children, need to destory too
         this.weapon.destroy();
+    }
+
+    getType(){
+        return "Player";
     }
 
 }

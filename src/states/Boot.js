@@ -6,7 +6,7 @@ export default class Boot {
     create() {
         //namespace
         this.game.geowar = {
-            server : 'http://localhost:3000'
+            server : 'http://www.yamixed.com/nodejs'
         }; 
         this.game.input.maxPointers = 1;
         //make sure the game running even loose focus

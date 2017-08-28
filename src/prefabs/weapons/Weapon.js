@@ -58,7 +58,7 @@ export default class Weapon {
 
     bulletContact(otherBody) {
         //only kill the player
-        if (otherBody && otherBody.sprite && typeof /Player/i.test(otherBody.sprite.getType())) {
+        if (otherBody && otherBody.sprite && typeof otherBody.sprite.getType == 'function' && /Player/i.test(otherBody.sprite.getType())) {
             if (otherBody.sprite != this.player){
                 //not kill, directly kick player out
                 otherBody.sprite.destroy();

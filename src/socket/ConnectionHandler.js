@@ -14,7 +14,7 @@ export default class ConnectionHandler {
                   this.game.geowar.currentPlayer.playerId = data.id;
                   //add to player map
                   this.game.geowar.players[data.id] = {
-                        sprite : this.game.geowar.currentPlayer
+                        sprite: this.game.geowar.currentPlayer
                   };
                   console.log('playerId = ' + this.game.geowar.currentPlayer.playerId + ' connected');
             }
@@ -32,6 +32,13 @@ export default class ConnectionHandler {
                         delete this.game.geowar.players[data.id];
                   }
 
+            }
+            else if (data.type === 'playerKilled') {
+                  this.game.geowar.players[data.id].sprite.destroy();
+                  delete this.game.geowar.players[data.id];
+                  if (this.game.geowar.currentPlayer.playerId == data.id) {
+                        this.game.geowar.socketReady = false;
+                  }
             }
       }
 

@@ -4,7 +4,7 @@ import weaponJson from '../../textures/weapons/weapon.json';
 
 export default class Weapon {
 
-    constructor(game,player) {
+    constructor(game, player) {
         this.game = game;
         this.player = player;
         this.speed = 500;
@@ -17,7 +17,7 @@ export default class Weapon {
 
     createBullet() {
         this.bmd = this.game.make.bitmapData(12, 12);
-        new CanvasHelper(this.bmd, weaponJson, {body : this.player.colorSet.head}).drawTexture();
+        new CanvasHelper(this.bmd, weaponJson, { body: this.player.colorSet.head }).drawTexture();
     }
 
 
@@ -25,7 +25,8 @@ export default class Weapon {
         if (this.game.time.now > this.bulletGate) {
             var bullet = this.bulletGroup.getFirstDead();
             var pos = this.initBulletPosition();
-            if (bullet) {                   
+            if (bullet) {
+                bullet.bid = Utils.generateRandomNumber();
                 bullet.body.x = pos.x;
                 bullet.body.y = pos.y;
                 var v = this.initBulletVelocity();
@@ -35,6 +36,7 @@ export default class Weapon {
             }
             else {
                 var bullet = this.bulletGroup.create(pos.x, pos.y, this.bmd);
+                bullet.bid = Utils.generateRandomNumber();
                 bullet.isBullet = true;
                 this.game.physics.p2.enable(bullet);
                 bullet.checkWorldBounds = true;
@@ -50,17 +52,105 @@ export default class Weapon {
         }
     }
 
+
+    push() {
+        var bullets = this.getBullets();
+        this.game.geowar.socketHandler.push({ name: "playerFire", id: this.player.playerId, bullets: bullets });
+    }
+
+
+
+    playPeerFire(bullets) {
+        if (bullets && bullets.length) {
+            for (var i in bullets) {
+                var children = this.bulletGroup.children;
+                var found = false;
+                if (children && children.length > 0) {
+                    for (var j in children) {
+                        if (children[j].bid == bullets[i].bid) {
+                            children[j].body.x = bullets[i].x;
+                            children[j].body.y = bullets[i].y;
+                            children[j].body.angle = bullets[i].angle;
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (!found) {
+                    var bullet = this.bulletGroup.getFirstDead();
+                    if (bullet) {
+                        bullet.bid = bullets[i].bid;
+                        bullet.body.x = bullets[i].x;
+                        bullet.body.y = bullets[i].y;
+                        bullet.body.angle = bullets[i].angle;
+                        bullet.revive();
+                    }
+                    else {
+                        var bullet = this.bulletGroup.create(bullets[i].x, bullets[i].y, this.bmd);
+                        bullet.bid = bullets[i].bid;
+                        bullet.isBullet = true;
+                        this.game.physics.p2.enable(bullet);
+                        bullet.body.angle = bullets[i].angle;
+                        bullet.checkWorldBounds = true;
+                        bullet.body.collideWorldBounds = false;
+                        bullet.events.onOutOfBounds.add(this.bulletOutOfBounds, this);
+                        this.collideSetting(bullet);
+                    }
+                }
+            }
+            var children = this.bulletGroup.children;
+            if (children && children.length > 0) {
+                for (var i in children) {
+                    var found = false;
+                    for (var j in bullets) {
+                        if (children[i].bid == bullets[j].bid) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        children[i].destroy();
+                    }
+                }
+            }
+        }
+        else {
+            var children = this.bulletGroup.children;
+            if (children && children.length > 0) {
+                for (var i in children) {
+                    children[i].destroy();
+                }
+            }
+        }
+    }
+
+
+    getBullets() {
+        var bullets = this.bulletGroup.children;
+        var json = [];
+        if (bullets && bullets.length > 0) {
+            for (var i in bullets) {
+                if (bullets[i].alive) {
+                    json.push({ bid: bullets[i].bid, x: bullets[i].x, y: bullets[i].y, angle: bullets[i].angle });
+                }
+
+            }
+        }
+        return json;
+    }
+
     collideSetting(bullet) {
         bullet.body.setCollisionGroup(this.game.geowar.bulletCollisionGroup);
         bullet.body.collides([this.game.geowar.playerCollisionGroup, this.game.geowar.bulletCollisionGroup]);
-        bullet.body.onBeginContact.add(this.bulletContact,this);
+        bullet.body.onBeginContact.add(this.bulletContact, this);
     };
 
     bulletContact(otherBody) {
         //only kill the player
         if (otherBody && otherBody.sprite && typeof otherBody.sprite.getType == 'function' && /Player/i.test(otherBody.sprite.getType())) {
-            if (otherBody.sprite != this.player){
+            if (otherBody.sprite != this.player) {
                 //not kill, directly kick player out
+                this.game.geowar.socketHandler.push({ name: "connection", id: otherBody.sprite.playerId, "type" : "playerKilled" });
                 otherBody.sprite.destroy();
             }
         }
@@ -96,7 +186,7 @@ export default class Weapon {
     };
 
 
-    destroy(){
+    destroy() {
         this.bulletGroup.destroy();
     }
 

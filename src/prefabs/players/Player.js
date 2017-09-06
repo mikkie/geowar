@@ -72,26 +72,44 @@ export default class Player extends Phaser.Sprite {
 
             if (this.fireButton.isDown) {
                 this.weapon.fire(this);
-                this.pushState({ name: "playerFire", id: this.playerId });
             }
-
-            this.pushState({ name: "playerMove", id: this.playerId, x: this.x, y: this.y, angle: this.angle, type: this.getType(), colorSet: this.colorSet });
             //only push current player data to server and use socket.io to broadcase to peer players
+            this.pushState({ name: "playerMove", id: this.playerId, x: this.x, y: this.y, angle: this.angle, type: this.getType(), colorSet: this.colorSet });
+            this.weapon.push();
         }
         //update peer player pos by data from socket.io
         else if (this.game.geowar.players[this.playerId]) {
             if (this.game.geowar.players[this.playerId].pos) {
                 var pos = this.game.geowar.players[this.playerId].pos;
-                this.body.x = pos.x;
-                this.body.y = pos.y;
-                this.body.angle = pos.angle;
+                if(this.game.geowar.enablePredict && this.timestamp == pos.timestamp){
+                    predictPeerPlayerMove(pos);
+                }
+                else{
+                    this.previous = {
+                        x : this.body.x,
+                        y : this.body.y,
+                        angle : this.body.angle,
+                        timestamp : this.timestamp
+                    }
+                    this.body.x = pos.x;
+                    this.body.y = pos.y;
+                    this.body.angle = pos.angle;
+                    this.timestamp = pos.timestamp;
+                }
             }
             if (this.game.geowar.players[this.playerId].fire) {
-                this.weapon.fire(this);
-                this.game.geowar.players[this.playerId].fire = false;
+                this.weapon.playPeerFire(this.game.geowar.players[this.playerId].fire.bullets);
+                this.game.geowar.players[this.playerId].fire = null;
             }
         }
     }
+
+
+
+    predictPeerPlayerMove(posFromSocket){
+        
+    }
+
 
     pushState(data) {
         this.game.geowar.socketHandler.push(data);

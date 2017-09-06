@@ -8,7 +8,9 @@ export default class PlayerFireHandler {
             if (this.game.geowar.players[data.id]) {
                 var peerPlayer = this.game.geowar.players[data.id]; 
                 //cache the peer player pos meta data and update in update method. 
-                peerPlayer.fire = true;
+                peerPlayer.fire = {
+                    bullets :  data.bullets 
+                };
             }
       }
 

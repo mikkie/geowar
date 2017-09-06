@@ -14,7 +14,8 @@ export default class PlayerMoveHandler {
                 peerPlayer.pos = {
                     x : data.x,
                     y : data.y,
-                    angle : data.angle
+                    angle : data.angle,
+                    timestamp : new Date().getTime()
                 };
             }
             else{

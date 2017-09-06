@@ -61,7 +61,7 @@ export default class Weapon {
 
 
     playPeerFire(bullets) {
-        if (bullets && bullets.length) {
+        if (bullets && bullets.length > 0) {
             for (var i in bullets) {
                 var children = this.bulletGroup.children;
                 var found = false;
@@ -109,7 +109,7 @@ export default class Weapon {
                         }
                     }
                     if (!found) {
-                        children[i].destroy();
+                        children[i].kill();
                     }
                 }
             }
@@ -118,7 +118,7 @@ export default class Weapon {
             var children = this.bulletGroup.children;
             if (children && children.length > 0) {
                 for (var i in children) {
-                    children[i].destroy();
+                    children[i].kill();
                 }
             }
         }

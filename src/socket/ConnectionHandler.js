@@ -10,24 +10,33 @@ export default class ConnectionHandler {
             }
             if (data.type === 'connected') {
                   this.game.geowar.socketReady = true;
+                  //reconnected
+                  if(this.game.geowar.currentPlayer.playerId){
+                     this.game.geowar.currentPlayer.prePlayerId = this.game.geowar.currentPlayer.playerId;  
+                  }
                   //set current player id
                   this.game.geowar.currentPlayer.playerId = data.id;
                   //add to player map
                   this.game.geowar.players[data.id] = {
                         sprite: this.game.geowar.currentPlayer
                   };
-                  console.log('playerId = ' + this.game.geowar.currentPlayer.playerId + ' connected');
+                  console.log('current playerId = ' + this.game.geowar.currentPlayer.playerId + ' connected');
             }
             else if (data.type === 'disconnected') {
                   var needDestroy = true;
                   if (this.game.geowar.currentPlayer.playerId == data.id) {
                         needDestroy = false;
                         this.game.geowar.socketReady = false;
-                        console.log('playerId = ' + this.game.geowar.currentPlayer.playerId + 'disconnected');
+                        console.log('current playerId = ' + data.id + 'disconnected');
+                  }
+                  else if(this.game.geowar.currentPlayer.prePlayerId == data.id){
+                        needDestroy = false;
+                        console.log('current old playerId = ' + data.id + 'disconnected');   
                   }
                   if (this.game.geowar.players[data.id]) {
                         if (needDestroy) {
                               this.game.geowar.players[data.id].sprite.destroy();
+                              console.log('peer playerId = ' + data.id + 'disconnected');
                         }
                         delete this.game.geowar.players[data.id];
                   }

@@ -11,8 +11,10 @@ export default class ConnectionHandler {
             if (data.type === 'connected') {
                   this.game.geowar.socketReady = true;
                   //reconnected
-                  if(this.game.geowar.currentPlayer.playerId){
-                     this.game.geowar.currentPlayer.prePlayerId = this.game.geowar.currentPlayer.playerId;  
+                  if (this.game.geowar.currentPlayer.playerId) {
+                        this.game.geowar.currentPlayer.prePlayerId = this.game.geowar.currentPlayer.playerId;
+                        //notify peer destory previous player
+                        this.game.geowar.socketHandler.push({ name: "connection", id: this.game.geowar.currentPlayer.prePlayerId, "type": "playerKilled" });
                   }
                   //set current player id
                   this.game.geowar.currentPlayer.playerId = data.id;
@@ -29,9 +31,9 @@ export default class ConnectionHandler {
                         this.game.geowar.socketReady = false;
                         console.log('current playerId = ' + data.id + 'disconnected');
                   }
-                  else if(this.game.geowar.currentPlayer.prePlayerId == data.id){
+                  else if (this.game.geowar.currentPlayer.prePlayerId == data.id) {
                         needDestroy = false;
-                        console.log('current old playerId = ' + data.id + 'disconnected');   
+                        console.log('current old playerId = ' + data.id + 'disconnected');
                   }
                   if (this.game.geowar.players[data.id]) {
                         if (needDestroy) {
@@ -43,12 +45,14 @@ export default class ConnectionHandler {
 
             }
             else if (data.type === 'playerKilled') {
-                  this.game.geowar.players[data.id].sprite.destroy();
-                  delete this.game.geowar.players[data.id];
-                  if (this.game.geowar.currentPlayer.playerId == data.id) {
-                        this.game.geowar.socketReady = false;
+                  if (this.game.geowar.players[data.id]) {
+                        this.game.geowar.players[data.id].sprite.destroy();
+                        delete this.game.geowar.players[data.id];
+                        console.log('playerId = ' + data.id + 'killed');
+                        if (this.game.geowar.currentPlayer.playerId == data.id) {
+                              this.game.geowar.socketReady = false;
+                        }
                   }
             }
       }
-
 }

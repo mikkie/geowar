@@ -1,6 +1,7 @@
 import CanvasHelper from '../../common/CanvasHelper.js';
-import playerJson from '../../textures/players/Player.json';
+import playerJson from '../../textures/players/player.json';
 import Utils from '../../common/Utils.js';
+import ExplosionParticle from '../weapons/ExplosionParticle.js';
 
 export default class Player extends Phaser.Sprite {
 
@@ -39,10 +40,10 @@ export default class Player extends Phaser.Sprite {
 
     contact(otherBody) {
         if (otherBody && otherBody.sprite && otherBody.sprite.isBullet) {
-            if(otherBody.sprite.player != this){
+            if (otherBody.sprite.player != this) {
                 //kill for reuse bullet
-               otherBody.sprite.kill();
-            }    
+                otherBody.sprite.kill();
+            }
         }
     };
 
@@ -81,15 +82,15 @@ export default class Player extends Phaser.Sprite {
         else if (this.game.geowar.players[this.playerId]) {
             if (this.game.geowar.players[this.playerId].pos) {
                 var pos = this.game.geowar.players[this.playerId].pos;
-                if(this.game.geowar.enablePredict && this.timestamp == pos.timestamp){
+                if (this.game.geowar.enablePredict && this.timestamp == pos.timestamp) {
                     predictPeerPlayerMove(pos);
                 }
-                else{
+                else {
                     this.previous = {
-                        x : this.body.x,
-                        y : this.body.y,
-                        angle : this.body.angle,
-                        timestamp : this.timestamp
+                        x: this.body.x,
+                        y: this.body.y,
+                        angle: this.body.angle,
+                        timestamp: this.timestamp
                     }
                     this.body.x = pos.x;
                     this.body.y = pos.y;
@@ -106,8 +107,8 @@ export default class Player extends Phaser.Sprite {
 
 
 
-    predictPeerPlayerMove(posFromSocket){
-        
+    predictPeerPlayerMove(posFromSocket) {
+
     }
 
 
@@ -117,19 +118,30 @@ export default class Player extends Phaser.Sprite {
 
 
     createWeapon() {
-        this.weapon = this.weaponFactory.createWeapon('basic',this);
+        this.weapon = this.weaponFactory.createWeapon('basic', this);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     }
 
 
-    destroy(destroyChildren, destroyTexture){
+    destroy(destroyChildren, destroyTexture) {
+        this.triggerExplode();
         super.destroy(destroyChildren, destroyTexture);
         //coz the weapon not children, need to destory too
         this.weapon.destroy();
     }
 
-    getType(){
+
+    triggerExplode() {
+        var emitter = this.game.add.emitter(this.x, this.y, 50);
+        emitter.particleClass = ExplosionParticle;
+        emitter.makeParticles();
+        emitter.setAlpha(1, .2, 3000);
+        emitter.setScale(1,2,1,2, 3000);
+        emitter.explode(3400,15);
+    }
+
+    getType() {
         return "Player";
     }
 

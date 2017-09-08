@@ -4,11 +4,20 @@ export default class ConnectionHandler {
             this.game = game;
       }
 
+
+      printNetworkLatency(){
+          if(this.game.geowar.connectionTimestamp){
+             console.log('network latency: ' + (new Date().getTime() - this.game.geowar.connectionTimestamp) + ' ms'); 
+             this.game.geowar.connectionTimestamp = null;
+          }
+      }
+
       handle(data) {
             if (!this.game.geowar.players) {
                   this.game.geowar.players = {};
             }
             if (data.type === 'connected') {
+                  this.printNetworkLatency();
                   this.game.geowar.socketReady = true;
                   //reconnected
                   if (this.game.geowar.currentPlayer.playerId) {
@@ -29,16 +38,16 @@ export default class ConnectionHandler {
                   if (this.game.geowar.currentPlayer.playerId == data.id) {
                         needDestroy = false;
                         this.game.geowar.socketReady = false;
-                        console.log('current playerId = ' + data.id + 'disconnected');
+                        console.log('current playerId = ' + data.id + ' disconnected');
                   }
                   else if (this.game.geowar.currentPlayer.prePlayerId == data.id) {
                         needDestroy = false;
-                        console.log('current old playerId = ' + data.id + 'disconnected');
+                        console.log('current old playerId = ' + data.id + ' disconnected');
                   }
                   if (this.game.geowar.players[data.id]) {
                         if (needDestroy) {
                               this.game.geowar.players[data.id].sprite.destroy();
-                              console.log('peer playerId = ' + data.id + 'disconnected');
+                              console.log('peer playerId = ' + data.id + ' disconnected');
                         }
                         delete this.game.geowar.players[data.id];
                   }
@@ -48,7 +57,7 @@ export default class ConnectionHandler {
                   if (this.game.geowar.players[data.id]) {
                         this.game.geowar.players[data.id].sprite.destroy();
                         delete this.game.geowar.players[data.id];
-                        console.log('playerId = ' + data.id + 'killed');
+                        console.log('playerId = ' + data.id + ' killed');
                         if (this.game.geowar.currentPlayer.playerId == data.id) {
                               this.game.geowar.socketReady = false;
                         }

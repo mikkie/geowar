@@ -6,7 +6,7 @@ export default class Boot {
     create() {
         //namespace
         this.game.geowar = {
-            server : 'http://www.yamixed.com/nodejs',
+            server : 'http://localhost:8081/nodejs',
             enablePredict : false
         }; 
         this.game.input.maxPointers = 1;

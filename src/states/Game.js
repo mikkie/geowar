@@ -31,6 +31,7 @@ export default class Game extends Phaser.State {
         //cache current player
         this.game.geowar.currentPlayer = this.player;
         //set up socket
+        this.game.geowar.connectionTimestamp = new Date().getTime();
         this.game.geowar.socketHandler = new SocketHandler(io(this.game.geowar.server), this.game);
     }
 

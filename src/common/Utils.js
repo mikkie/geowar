@@ -16,4 +16,5 @@ export default class Utils {
         }
         return color;
     }
+
 }

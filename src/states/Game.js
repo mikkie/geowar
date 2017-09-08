@@ -1,6 +1,7 @@
 import Utils from '../common/Utils.js';
 import PlayerFactory from '../prefabs/players/PlayerFactory.js';
 import BackgroundFactory from '../prefabs/background/BackgroundFactory.js';
+import NumberBox from '../prefabs/ui/NumberBox.js';
 import SocketHandler from "../socket/SocketHandler.js";
 
 export default class Game extends Phaser.State {
@@ -10,6 +11,8 @@ export default class Game extends Phaser.State {
         this.game.world.setBounds(0, 0, 3000, 2000);
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.stage.backgroundColor = '#282626';
+        //setup UI
+        this.setupUI();
         //factories
         this.backgroundFactory = new BackgroundFactory(this.game);
         this.playerFactory = new PlayerFactory(this.game);
@@ -36,7 +39,18 @@ export default class Game extends Phaser.State {
     }
 
 
+    setupUI(){
+        this.UILayer = this.add.group();
+        // this.bloodUI = new NumberBox(this.game, 50, 20, 'Blood', 20, { font: "15px Arial", align: "center", fill: "red" } , 0);
+        // this.UILayer.add(this.bloodUI);
+
+        this.ammoUI = new NumberBox(this.game, 50, 20, 'Ammos', 100, { font: "15px Arial", align: "center", fill: "red" } , 0);
+        this.UILayer.add(this.ammoUI);
+        this.UILayer.fixedToCamera = true;
+    }
+
     update() {
+        this.ammoUI.setValue(this.game.geowar.currentPlayer.weapon.bulletCounts);
     }
 
 }

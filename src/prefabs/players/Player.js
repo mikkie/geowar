@@ -11,6 +11,7 @@ export default class Player extends Phaser.Sprite {
         this.height = height;
         this.canvas = this.key;
         this.needControl = needControl;
+        this.blood = 20;
         if (colorSet) {
             this.colorSet = colorSet;
         }

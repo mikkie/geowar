@@ -11,6 +11,7 @@ export default class Weapon {
         this.shotInterval = 50;
         this.bulletGate = 0;
         this.bulletGroup = this.game.add.group();
+        this.bulletCounts = 100;
         this.createBullet();
     }
 
@@ -22,7 +23,7 @@ export default class Weapon {
 
 
     fire() {
-        if (this.game.time.now > this.bulletGate) {
+        if (this.game.time.now > this.bulletGate && this.bulletCounts > 0) {
             var bullet = this.bulletGroup.getFirstDead();
             var pos = this.initBulletPosition();
             if (bullet) {
@@ -47,7 +48,7 @@ export default class Weapon {
                 bullet.body.velocity.y = v.y;
                 this.collideSetting(bullet);
             }
-
+            this.bulletCounts--;
             this.bulletGate = this.game.time.now + this.shotInterval;
         }
     }

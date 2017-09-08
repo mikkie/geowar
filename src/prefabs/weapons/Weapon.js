@@ -11,7 +11,7 @@ export default class Weapon {
         this.shotInterval = 50;
         this.bulletGate = 0;
         this.bulletGroup = this.game.add.group();
-        this.bulletCounts = 100;
+        this.bulletCounts = this.game.geowar.initBulletCount;
         this.createBullet();
     }
 

@@ -44,7 +44,7 @@ export default class Game extends Phaser.State {
         // this.bloodUI = new NumberBox(this.game, 50, 20, 'Blood', 20, { font: "15px Arial", align: "center", fill: "red" } , 0);
         // this.UILayer.add(this.bloodUI);
 
-        this.ammoUI = new NumberBox(this.game, 50, 20, 'Ammos', 100, { font: "15px Arial", align: "center", fill: "red" } , 0);
+        this.ammoUI = new NumberBox(this.game, 50, 20, 'Ammos', this.game.geowar.initBulletCount, { font: "15px Arial", align: "center", fill: "red" } , 0);
         this.UILayer.add(this.ammoUI);
         this.UILayer.fixedToCamera = true;
     }

@@ -34,8 +34,8 @@ module.exports = function(grunt) {
         files: [
           {expand: true, src: ['assets/**'], dest: 'build/'},
           {expand: true, src: ['css/**'], dest: 'build/'},
-          {src: ['index.html'], dest: 'build/index.html'}
-    
+          {src: ['index.html'], dest: 'build/index.html'},
+          {src: ['favicon.ico'], dest: 'build/favicon.ico'}
         ]
       }
     },

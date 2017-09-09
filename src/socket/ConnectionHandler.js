@@ -4,20 +4,11 @@ export default class ConnectionHandler {
             this.game = game;
       }
 
-
-      printNetworkLatency(){
-          if(this.game.geowar.connectionTimestamp){
-             console.log('network latency: ' + (new Date().getTime() - this.game.geowar.connectionTimestamp) + ' ms'); 
-             this.game.geowar.connectionTimestamp = null;
-          }
-      }
-
       handle(data) {
             if (!this.game.geowar.players) {
                   this.game.geowar.players = {};
             }
             if (data.type === 'connected') {
-                  this.printNetworkLatency();
                   this.game.geowar.socketReady = true;
                   //reconnected
                   if (this.game.geowar.currentPlayer.playerId) {

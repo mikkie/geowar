@@ -27,7 +27,7 @@ export default class Game extends Phaser.State {
         //after create new collision group update the group to collide with bounds 
         this.game.physics.p2.updateBoundsCollisionGroup();
         //player
-        this.player = this.playerFactory.createPlayer();
+        this.player = this.playerFactory.createPlayer('',this.replaySignal);
         this.game.add.existing(this.player);
         playersGroup.add(this.player);
         this.game.camera.follow(this.player);
@@ -47,10 +47,43 @@ export default class Game extends Phaser.State {
         this.ammoUI = new NumberBox(this.game, 50, 20, 'Ammos', this.game.geowar.initBulletCount, { font: "15px Arial", align: "center", fill: "red" } , 0);
         this.UILayer.add(this.ammoUI);
         this.UILayer.fixedToCamera = true;
+
+        this.addReplaySignal();
     }
 
     update() {
         this.ammoUI.setValue(this.game.geowar.currentPlayer.weapon.bulletCounts);
+    }
+
+
+    addReplaySignal(){
+        this.replaySignal = new Phaser.Signal();
+        this.replaySignal.addOnce(this.popupReplayBtn,this);
+    }
+
+
+    popupReplayBtn(){
+        this.replay = this.add.sprite(this.game.width / 2, this.game.height / 2, 'replay');
+        this.replay.anchor.setTo(0.5, 0.5);
+        this.replay.scale.setTo(0.1, 0.1);
+        this.replay.inputEnabled = true;
+        this.replay.events.onInputDown.add(this.startReplay, this);
+        this.replay.events.onInputOver.add(this.mouseOver, this);
+        this.replay.events.onInputOut.add(this.mouseOut, this);
+        this.replay.fixedToCamera = true;
+    }
+
+
+    startReplay() {
+        window.location.reload();
+    }
+
+    mouseOver() {
+        this.game.canvas.style.cursor = 'pointer';
+    }
+
+    mouseOut() {
+        this.game.canvas.style.cursor = 'default';
     }
 
 }

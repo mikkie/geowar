@@ -13,20 +13,20 @@ export default class PlayerFactory {
         this.weaponFactory = new WeaponFactory(game);
     }
 
-    createPlayer(defaultType) {
+    createPlayer(defaultType,replaySignal) {
         var type = defaultType;
         if (!type) {
             type = this._playerTypes[Math.floor(Math.random() * this._playerTypes.length)];
         }
         switch (type) {
             case "triangle":
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true);
+                return new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true, replaySignal);
             case "square":
-                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true);
+                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true, replaySignal);
             case "circle":
-                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true);
+                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true, replaySignal);
             default:
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true);
+                return new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true, replaySignal);
         }
     }
 

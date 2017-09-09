@@ -5,12 +5,13 @@ import ExplosionParticle from '../weapons/ExplosionParticle.js';
 
 export default class Player extends Phaser.Sprite {
 
-    constructor(game, x, y, width, height, weaponFactory, colorSet, needControl) {
+    constructor(game, x, y, width, height, weaponFactory, colorSet, needControl, replaySignal) {
         super(game, x, y, game.make.bitmapData(width, height));
         this.width = width;
         this.height = height;
         this.canvas = this.key;
         this.needControl = needControl;
+        this.replaySignal = replaySignal;
         this.blood = 20;
         if (colorSet) {
             this.colorSet = colorSet;
@@ -127,6 +128,10 @@ export default class Player extends Phaser.Sprite {
 
     destroy(destroyChildren, destroyTexture) {
         this.triggerExplode();
+        if(this.replaySignal && this.game.geowar.currentPlayer.playerId == this.playerId){
+           //send restart signal  
+           this.replaySignal.dispatch();
+        }
         super.destroy(destroyChildren, destroyTexture);
         //coz the weapon not children, need to destory too
         this.weapon.destroy();

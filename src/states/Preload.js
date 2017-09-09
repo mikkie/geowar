@@ -18,7 +18,7 @@ export default class Preload {
         this.load.setPreloadSprite(this.asset);
 
         this.load.image('play','assets/images/play.png');
-        // this.load.image('replay','assets/images/replay.png');
+        this.load.image('replay','assets/images/replay.png');
 
         //start load
         this.load.start();

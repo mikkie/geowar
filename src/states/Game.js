@@ -27,7 +27,10 @@ export default class Game extends Phaser.State {
         //after create new collision group update the group to collide with bounds 
         this.game.physics.p2.updateBoundsCollisionGroup();
         //player
-        this.player = this.playerFactory.createPlayer('',this.replaySignal);
+        this.player = this.playerFactory.createPlayer('',{
+            replay : this.replaySignal,
+            kill : this.killSignal
+        });
         this.game.add.existing(this.player);
         playersGroup.add(this.player);
         this.game.camera.follow(this.player);
@@ -44,15 +47,26 @@ export default class Game extends Phaser.State {
         // this.bloodUI = new NumberBox(this.game, 50, 20, 'Blood', 20, { font: "15px Arial", align: "center", fill: "red" } , 0);
         // this.UILayer.add(this.bloodUI);
 
+        //ammos
         this.ammoUI = new NumberBox(this.game, 50, 20, 'Ammos', this.game.geowar.initBulletCount, { font: "15px Arial", align: "center", fill: "red" } , 0);
         this.UILayer.add(this.ammoUI);
+        //kills
+        this.killUI = new NumberBox(this.game, 150, 20, 'Kills', 0, { font: "15px Arial", align: "center", fill: "red" } , 0);
+        this.UILayer.add(this.killUI); 
+
         this.UILayer.fixedToCamera = true;
 
-        this.addReplaySignal();
+        this.addSignals();
     }
 
     update() {
         this.ammoUI.setValue(this.game.geowar.currentPlayer.weapon.bulletCounts);
+    }
+
+
+    addSignals(){
+        this.addReplaySignal();
+        this.addKillSignal();
     }
 
 
@@ -61,6 +75,15 @@ export default class Game extends Phaser.State {
         this.replaySignal.addOnce(this.popupReplayBtn,this);
     }
 
+    addKillSignal(){
+        this.killSignal = new Phaser.Signal();
+        this.killSignal.add(this.updateKillCount,this);
+    }
+
+
+    updateKillCount(){
+        this.killUI.setValue(this.killUI.getValue() + 1);
+    }
 
     popupReplayBtn(){
         this.replay = this.add.sprite(this.game.width / 2, this.game.height / 2, 'replay');

@@ -5,13 +5,13 @@ import ExplosionParticle from '../weapons/ExplosionParticle.js';
 
 export default class Player extends Phaser.Sprite {
 
-    constructor(game, x, y, width, height, weaponFactory, colorSet, needControl, replaySignal) {
+    constructor(game, x, y, width, height, weaponFactory, colorSet, needControl, signals) {
         super(game, x, y, game.make.bitmapData(width, height));
         this.width = width;
         this.height = height;
         this.canvas = this.key;
         this.needControl = needControl;
-        this.replaySignal = replaySignal;
+        this.signals = signals;
         this.blood = 20;
         if (colorSet) {
             this.colorSet = colorSet;
@@ -128,9 +128,13 @@ export default class Player extends Phaser.Sprite {
 
     destroy(destroyChildren, destroyTexture) {
         this.triggerExplode();
-        if(this.replaySignal && this.game.geowar.currentPlayer.playerId == this.playerId){
-           //send restart signal  
-           this.replaySignal.dispatch();
+        //myself killed 
+        if (this.game.geowar.currentPlayer.playerId == this.playerId && this.signals && this.signals.replay) {
+            this.signals.replay.dispatch();
+        }
+        //kill other  
+        else if (this.game.geowar.currentPlayer.playerId != this.playerId && this.game.geowar.currentPlayer.signals && this.game.geowar.currentPlayer.signals.kill) {
+            this.game.geowar.currentPlayer.signals.kill.dispatch();
         }
         super.destroy(destroyChildren, destroyTexture);
         //coz the weapon not children, need to destory too
@@ -143,8 +147,8 @@ export default class Player extends Phaser.Sprite {
         emitter.particleClass = ExplosionParticle;
         emitter.makeParticles();
         emitter.setAlpha(1, .2, 3000);
-        emitter.setScale(1,2,1,2, 3000);
-        emitter.explode(3400,15);
+        emitter.setScale(1, 2, 1, 2, 3000);
+        emitter.explode(3400, 15);
     }
 
     getType() {

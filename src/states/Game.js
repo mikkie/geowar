@@ -8,16 +8,16 @@ export default class Game extends Phaser.State {
 
     create() {
         //stage
-        this.game.world.setBounds(0, 0, 3000, 2000);
+        this.game.world.setBounds(0, 0, 2000, 1500);
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.stage.backgroundColor = '#282626';
-        //setup UI
-        this.setupUI();
         //factories
         this.backgroundFactory = new BackgroundFactory(this.game);
         this.playerFactory = new PlayerFactory(this.game);
         //background
         this.backgroundFactory.createBackground('baisc', 100, this.game.world.width, this.game.world.height);
+        //setup UI
+        this.setupUI();
         //player group
         var playersGroup = this.game.add.group();
         this.game.geowar.playersGroup = playersGroup;
@@ -48,10 +48,10 @@ export default class Game extends Phaser.State {
         // this.UILayer.add(this.bloodUI);
 
         //ammos
-        this.ammoUI = new NumberBox(this.game, 50, 20, 'Ammos', this.game.geowar.initBulletCount, { font: "15px Arial", align: "center", fill: "red" } , 0);
+        this.ammoUI = new NumberBox(this.game, 50, 20, 'Ammos', this.game.geowar.initBulletCount, { font: "15px Arial", align: "center", fill: "#fff" } , 0);
         this.UILayer.add(this.ammoUI);
         //kills
-        this.killUI = new NumberBox(this.game, 150, 20, 'Kills', 0, { font: "15px Arial", align: "center", fill: "red" } , 0);
+        this.killUI = new NumberBox(this.game, 150, 20, 'Kills', 0, { font: "15px Arial", align: "center", fill: "#fff" } , 0);
         this.UILayer.add(this.killUI); 
 
         this.UILayer.fixedToCamera = true;

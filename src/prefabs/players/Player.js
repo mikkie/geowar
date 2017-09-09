@@ -144,6 +144,7 @@ export default class Player extends Phaser.Sprite {
 
     triggerExplode() {
         var emitter = this.game.add.emitter(this.x, this.y, 50);
+        emitter.gravity = 0;
         emitter.particleClass = ExplosionParticle;
         emitter.makeParticles();
         emitter.setAlpha(1, .2, 3000);

@@ -18,15 +18,17 @@ export default class PlayerFactory {
         if (!type) {
             type = this._playerTypes[Math.floor(Math.random() * this._playerTypes.length)];
         }
+        var randomX = Math.floor(Math.random() * (this.game.width - 50) + 50); 
+        var randomY = Math.floor(Math.random() * (this.game.height - 50) + 50);
         switch (type) {
             case "triangle":
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true, signals);
+                return new Player(this.game, randomX, randomY, 30, 35, this.weaponFactory, null, true, signals);
             case "square":
-                return new SquarePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true, signals);
+                return new SquarePlayer(this.game, randomX, randomY, 30, 35, this.weaponFactory, null, true, signals);
             case "circle":
-                return new CirclePlayer(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true, signals);
+                return new CirclePlayer(this.game, randomX, randomY, 30, 35, this.weaponFactory, null, true, signals);
             default:
-                return new Player(this.game, this.game.width / 2, this.game.height / 2, 30, 35, this.weaponFactory, null, true, signals);
+                return new Player(this.game, randomX, randomY, 30, 35, this.weaponFactory, null, true, signals);
         }
     }
 

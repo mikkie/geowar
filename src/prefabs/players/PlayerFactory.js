@@ -3,6 +3,9 @@ import SquarePlayer from './SquarePlayer.js';
 import CirclePlayer from './CirclePlayer.js';
 import WeaponFactory from '../weapons/WeaponFactory.js';
 import Utils from '../../common/Utils.js';
+import AIPlayer from '../ai/AIPlayer.js';
+import AICirclePlayer from '../ai/AICirclePlayer.js';
+import AISquarePlayer from '../ai/AISquarePlayer.js';
 
 export default class PlayerFactory {
 
@@ -13,12 +16,12 @@ export default class PlayerFactory {
         this.weaponFactory = new WeaponFactory(game);
     }
 
-    createPlayer(defaultType,signals) {
+    createPlayer(defaultType, signals) {
         var type = defaultType;
         if (!type) {
             type = this._playerTypes[Math.floor(Math.random() * this._playerTypes.length)];
         }
-        var randomX = Math.floor(Math.random() * (this.game.width - 50) + 50); 
+        var randomX = Math.floor(Math.random() * (this.game.width - 50) + 50);
         var randomY = Math.floor(Math.random() * (this.game.height - 50) + 50);
         switch (type) {
             case "triangle":
@@ -33,10 +36,10 @@ export default class PlayerFactory {
     }
 
 
-    createPeerPlayer(peerMetaData){
-       var type = peerMetaData.type;
-       var player = null;
-       switch (type) {
+    createPeerPlayer(peerMetaData) {
+        var type = peerMetaData.type;
+        var player = null;
+        switch (type) {
             case "Player":
                 player = new Player(this.game, peerMetaData.x, peerMetaData.y, 30, 35, this.weaponFactory, peerMetaData.colorSet, false);
                 break;
@@ -52,6 +55,26 @@ export default class PlayerFactory {
         }
         player.playerId = peerMetaData.id;
         return player;
+    }
+
+
+    createAIPlayer(defaultType) {
+        var type = defaultType;
+        if (!type) {
+            type = this._playerTypes[Math.floor(Math.random() * this._playerTypes.length)];
+        }
+        var randomX = Math.floor(Math.random() * (this.game.width - 50) + 50);
+        var randomY = Math.floor(Math.random() * (this.game.height - 50) + 50);
+        switch (type) {
+            case "triangle":
+                return new AIPlayer(this.game, randomX, randomY, 30, 35, this.weaponFactory, null);
+            case "square":
+                return new AISquarePlayer(this.game, randomX, randomY, 30, 35, this.weaponFactory, null);
+            case "circle":
+                return new AICirclePlayer(this.game, randomX, randomY, 30, 35, this.weaponFactory, null);
+            default:
+                return new AIPlayer(this.game, randomX, randomY, 30, 35, this.weaponFactory, null);
+        }
     }
 
 }

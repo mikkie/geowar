@@ -38,6 +38,8 @@ export default class Game extends Phaser.State {
         this.game.geowar.currentPlayer = this.player;
         //set up socket
         this.game.geowar.socketHandler = new SocketHandler(io(this.game.geowar.server), this.game);
+        //create AI players
+        this.createAIPlayers();
     }
 
 
@@ -106,6 +108,12 @@ export default class Game extends Phaser.State {
 
     mouseOut() {
         this.game.canvas.style.cursor = 'default';
+    }
+
+
+    createAIPlayers(){
+        var aiPlayer = this.playerFactory.createAIPlayer('');
+        this.game.add.existing(aiPlayer);
     }
 
 }

@@ -21,6 +21,7 @@
     "tests"
   ],
   "dependencies": {
-    "phaser": "^2.6.2"
+    "phaser": "^2.6.2",
+    "javascript-state-machine": "^3.0.1"
   }
 }

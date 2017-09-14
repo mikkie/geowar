@@ -112,8 +112,11 @@ export default class Game extends Phaser.State {
 
 
     createAIPlayers(){
-        var aiPlayer = this.playerFactory.createAIPlayer('triangle');
-        this.game.add.existing(aiPlayer);
+        var aiGroup = this.game.add.group();
+        for(var i = 0; i < Math.floor(Math.random() * 8 + 3); i++){
+          var aiPlayer = this.playerFactory.createAIPlayer('triangle');
+          aiGroup.add(aiPlayer);
+        }
     }
 
 }

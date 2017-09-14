@@ -150,6 +150,10 @@ export default class Weapon {
         //only kill the player
         if (otherBody && otherBody.sprite && typeof otherBody.sprite.getType == 'function' && /Player/i.test(otherBody.sprite.getType())) {
             if (otherBody.sprite != this.player) {
+                //ai not kill ai
+                if(this.player.createStateMachine && otherBody.sprite.createStateMachine){
+                   return;  
+                }
                 //not kill, directly kick player out
                 this.game.geowar.socketHandler.push({ name: "connection", id: otherBody.sprite.playerId, "type" : "playerKilled" });
                 otherBody.sprite.destroy();

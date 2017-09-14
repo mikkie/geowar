@@ -32,9 +32,14 @@ export default class AIPlayer extends Player {
 
 
 
-    catchupPlayer(){
-        var radomSpeed = Math.floor(Math.random() * 100 + 50);
-        this.body.thrust(radomSpeed);
+    catchupPlayer(nearestPlayer,fsm){
+        if(this.calcDistance(nearestPlayer) > 600){
+           var radomSpeed = Math.floor(Math.random() * 100 + 50);
+           this.body.thrust(radomSpeed);
+        }
+        else{
+           fsm.attackPlayers();
+        }
     }
 
     createStateMachine() {
@@ -52,14 +57,18 @@ export default class AIPlayer extends Player {
                    if(nearestPlayer){
                       var targetAngle = that.game.math.angleBetween(that.x,that.y,nearestPlayer.x,nearestPlayer.y);
                       that.body.angle = targetAngle * 180 / Math.PI + 90; 
-                      that.catchupPlayer();   
-                   }
-                   else{
-
+                      that.catchupPlayer(nearestPlayer,this);   
                    }
                 },
                 attackPlayers : function(){
-
+                   if(!that.weapon.nextFireTime){
+                      that.weapon.nextFireTime = that.game.time.now + 5000;   
+                   }
+                   else if(that.game.time.now > that.weapon.nextFireTime){
+                      that.weapon.fire(); 
+                      that.weapon.nextFireTime = that.game.time.now + Math.floor(Math.random() * 4000 + 1000);   
+                   } 
+                       
                 }
             }
         });

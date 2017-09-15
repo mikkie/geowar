@@ -48,11 +48,13 @@ export default class AIPlayer extends Player {
             init: 'cruise',
             transitions: [
                 { name: 'target', from: 'cruise', to: 'attack' },
-                { name: 'lostTarget', from: 'attack', to: 'cruise' },
-                { name: 'shooted', from: ['cruise','attack'], to: 'die' }
+                { name: 'lostTarget', from: 'attack', to: 'cruise' }
             ],
             methods: {
                 searchPlayers : function(){
+                   if(this.is('attack')){
+                      this.lostTarget();
+                   } 
                    var nearestPlayer = that.getNearestPlayerInRange();
                    if(nearestPlayer){
                       var targetAngle = that.game.math.angleBetween(that.x,that.y,nearestPlayer.x,nearestPlayer.y);
@@ -61,6 +63,7 @@ export default class AIPlayer extends Player {
                    }
                 },
                 attackPlayers : function(){
+                   this.target(); 
                    if(!that.weapon.nextFireTime){
                       that.weapon.nextFireTime = that.game.time.now + 5000;   
                    }

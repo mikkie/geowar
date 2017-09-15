@@ -71,21 +71,21 @@ export default class AIPlayer extends Player {
                     if (this.is('attack')) {
                         this.lostTarget();
                     }
-                    if (Utils.randomDicision(that,'targetOnPlayer','nextTargetOnPlayerTime',Math.floor(Math.random() * 1000 + 1000))) {
+                    // if (Utils.randomDicision(that,'targetOnPlayer','nextTargetOnPlayerTime',Math.floor(Math.random() * 1000 + 1000))) {
                         var nearestPlayer = that.getNearestPlayerInRange();
                         if (nearestPlayer) {
                             var targetAngle = that.game.math.angleBetween(that.x, that.y, nearestPlayer.x, nearestPlayer.y);
                             targetAngle = targetAngle * 180 / Math.PI + 90;
-                            var currentAngle = that.body.angle;
-                            if(Math.abs(targetAngle - currentAngle) < 20){
+                            // var currentAngle = that.body.angle;
+                            // if(Math.abs(targetAngle - currentAngle) < 20){
                                that.body.angle = targetAngle
-                            }
+                            // }
                             that.catchupPlayer(nearestPlayer, this);
                         }
-                    }
-                    else {
-                        that.randomCruise();
-                    }
+                    // }
+                    // else {
+                        // that.randomCruise();
+                    // }
                 },
                 attackPlayers: function () {
                     this.target();

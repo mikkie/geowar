@@ -7,7 +7,7 @@ export default class Boot {
         //namespace
         this.game.geowar = {
             server : 'http://www.yamixed.com/nodejs',
-            initBulletCount : 100,
+            initBulletCount : 50,
             enablePredict : false,
             debug : localStorage.getItem('geowar.debug') == 'true' ? true : false,
             log : function(msg){

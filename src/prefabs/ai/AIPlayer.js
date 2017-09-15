@@ -1,4 +1,5 @@
 import Player from '../players/Player.js';
+import Utils from '../../common/Utils.js';
 
 export default class AIPlayer extends Player {
 
@@ -8,37 +9,52 @@ export default class AIPlayer extends Player {
     }
 
 
-    calcDistance(player){
-       var dx = player.x - this.x;
-       var dy = player.y - this.y;
-       return Math.sqrt(dx * dx + dy * dy);
+    calcDistance(player) {
+        var dx = player.x - this.x;
+        var dy = player.y - this.y;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
-    getNearestPlayerInRange(){
+    getNearestPlayerInRange() {
         var players = this.game.geowar.playersGroup.children;
-        if(players && players.length > 0){
-           var minDistance = null;
-           var minDistancePlayer = null;
-           for(var i in players){
-               var distance = this.calcDistance(players[i]);
-               if(minDistance == null || distance < minDistance){
-                  minDistance = distance;
-                  minDistancePlayer = players[i];    
-               }  
-           }   
+        if (players && players.length > 0) {
+            var minDistance = null;
+            var minDistancePlayer = null;
+            for (var i in players) {
+                var distance = this.calcDistance(players[i]);
+                if (minDistance == null || distance < minDistance) {
+                    minDistance = distance;
+                    minDistancePlayer = players[i];
+                }
+            }
         }
         return minDistancePlayer;
     }
 
 
 
-    catchupPlayer(nearestPlayer,fsm){
-        if(this.calcDistance(nearestPlayer) > 600){
-           var radomSpeed = Math.floor(Math.random() * 100 + 50);
-           this.body.thrust(radomSpeed);
+    catchupPlayer(nearestPlayer, fsm) {
+        if (this.calcDistance(nearestPlayer) > 600) {
+            var radomSpeed = Math.floor(Math.random() * 100 + 50);
+            this.body.thrust(radomSpeed);
         }
-        else{
-           fsm.attackPlayers();
+        else {
+            fsm.attackPlayers();
+        }
+    }
+
+    randomCruise() {
+        if (Utils.randomDicision(this,'doRotate','nextDoRotateTime',Math.floor(Math.random() * 1000 + 1000))) {
+            if (Utils.randomDicision(this,'rotateLeft','nextRotateLeftTime',Math.floor(Math.random() * 1000 + 1000))) {
+                this.body.rotateLeft(50);
+            }
+            else {
+                this.body.rotateRight(50);
+            }
+        }
+        else {
+            var radomSpeed = Math.floor(Math.random() * 100 + 50);
+            this.body.thrust(radomSpeed);
         }
     }
 
@@ -51,27 +67,36 @@ export default class AIPlayer extends Player {
                 { name: 'lostTarget', from: 'attack', to: 'cruise' }
             ],
             methods: {
-                searchPlayers : function(){
-                   if(this.is('attack')){
-                      this.lostTarget();
-                   } 
-                   var nearestPlayer = that.getNearestPlayerInRange();
-                   if(nearestPlayer){
-                      var targetAngle = that.game.math.angleBetween(that.x,that.y,nearestPlayer.x,nearestPlayer.y);
-                      that.body.angle = targetAngle * 180 / Math.PI + 90; 
-                      that.catchupPlayer(nearestPlayer,this);   
-                   }
+                searchPlayers: function () {
+                    if (this.is('attack')) {
+                        this.lostTarget();
+                    }
+                    if (Utils.randomDicision(that,'targetOnPlayer','nextTargetOnPlayerTime',Math.floor(Math.random() * 1000 + 1000))) {
+                        var nearestPlayer = that.getNearestPlayerInRange();
+                        if (nearestPlayer) {
+                            var targetAngle = that.game.math.angleBetween(that.x, that.y, nearestPlayer.x, nearestPlayer.y);
+                            targetAngle = targetAngle * 180 / Math.PI + 90;
+                            var currentAngle = that.body.angle;
+                            if(Math.abs(targetAngle - currentAngle) < 20){
+                               that.body.angle = targetAngle
+                            }
+                            that.catchupPlayer(nearestPlayer, this);
+                        }
+                    }
+                    else {
+                        that.randomCruise();
+                    }
                 },
-                attackPlayers : function(){
-                   this.target(); 
-                   if(!that.weapon.nextFireTime){
-                      that.weapon.nextFireTime = that.game.time.now + 5000;   
-                   }
-                   else if(that.game.time.now > that.weapon.nextFireTime){
-                      that.weapon.fire(); 
-                      that.weapon.nextFireTime = that.game.time.now + Math.floor(Math.random() * 4000 + 1000);   
-                   } 
-                       
+                attackPlayers: function () {
+                    this.target();
+                    if (!that.weapon.nextFireTime) {
+                        that.weapon.nextFireTime = that.game.time.now + 5000;
+                    }
+                    else if (that.game.time.now > that.weapon.nextFireTime) {
+                        that.weapon.fire();
+                        that.weapon.nextFireTime = that.game.time.now + Math.floor(Math.random() * 4000 + 1000);
+                    }
+
                 }
             }
         });

@@ -16,4 +16,12 @@ export default class Utils {
         }
         return color;
     }
+
+    static randomDicision(flagOwner,flagName,nextFlagTimeName,timeInterval){
+        if(!flagOwner[nextFlagTimeName] || flagOwner.game.time.now > flagOwner[nextFlagTimeName]){
+           flagOwner[nextFlagTimeName] = flagOwner.game.time.now + timeInterval;
+           flagOwner[flagName] = Math.random() > 0.5;   
+        }
+        return flagOwner[flagName];  
+    }
 }

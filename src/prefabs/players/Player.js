@@ -31,8 +31,9 @@ export default class Player extends Phaser.Sprite {
         this.collideSetting();
         this.weaponFactory = weaponFactory;
         this.createWeapon();
-        this.game.add.tween(this).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
+        this.game.add.tween(this).to({ alpha: 1 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
     }
+
 
 
     collideSetting() {
@@ -78,6 +79,33 @@ export default class Player extends Phaser.Sprite {
             if (this.fireButton.isDown) {
                 this.weapon.fire(this);
             }
+
+            if (this.game.input.activePointer.isDown) {
+                var pointer = {
+                    x: this.game.input.activePointer.x,
+                    y: this.game.input.activePointer.y
+                };
+                if (this.game.geowar.touchAreA.contains(pointer.x, pointer.y)) {
+                    this.body.rotateLeft(50);
+                }
+                else if (this.game.geowar.touchAreD.contains(pointer.x, pointer.y)) {
+                    this.body.rotateRight(50);
+                }
+                else {
+                    this.body.setZeroRotation();
+                }
+                if (this.game.geowar.touchAreW.contains(pointer.x, pointer.y)) {
+                    this.body.thrust(300);
+                }
+                else if (this.game.geowar.touchAreS.contains(pointer.x, pointer.y)) {
+                    this.body.reverse(300);
+                }
+
+                if (this.game.geowar.touchAreF.contains(pointer.x, pointer.y)) {
+                    this.weapon.fire(this);
+                }
+            }
+
             //only push current player data to server and use socket.io to broadcase to peer players
             this.pushState({ name: "playerMove", id: this.playerId, x: this.x, y: this.y, angle: this.angle, type: this.getType(), colorSet: this.colorSet });
             this.weapon.push();
@@ -128,7 +156,7 @@ export default class Player extends Phaser.Sprite {
     }
 
 
-    winBullet(){
+    winBullet() {
         this.weapon.addBullet(this.game.geowar.winBulletCount);
     }
 

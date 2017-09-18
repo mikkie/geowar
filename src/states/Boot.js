@@ -6,7 +6,7 @@ export default class Boot {
     create() {
         //namespace
         this.game.geowar = {
-            server : 'http://localhost:8081/nodejs',
+            server : 'http://www.yamixed.com/nodejs',
             initBulletCount : 50,
             winBulletCount : 5,
             enablePredict : false,

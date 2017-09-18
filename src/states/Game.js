@@ -16,8 +16,6 @@ export default class Game extends Phaser.State {
         this.playerFactory = new PlayerFactory(this.game);
         //background
         this.backgroundFactory.createBackground('baisc', 100, this.game.world.width, this.game.world.height);
-        //setup UI
-        this.setupUI();
         //player group
         var playersGroup = this.game.add.group();
         this.game.geowar.playersGroup = playersGroup;
@@ -40,6 +38,8 @@ export default class Game extends Phaser.State {
         this.game.geowar.socketHandler = new SocketHandler(io(this.game.geowar.server), this.game);
         //create AI
         this.createAIPlayers();
+        //setup UI
+        this.setupUI();
     }
 
 
@@ -55,9 +55,35 @@ export default class Game extends Phaser.State {
         this.killUI = new NumberBox(this.game, 150, 20, 'Kills', 0, { font: "15px Arial", align: "center", fill: "#fff" }, 0);
         this.UILayer.add(this.killUI);
 
+        this.addMobileController();
         this.UILayer.fixedToCamera = true;
 
         this.addSignals();
+    }
+
+
+
+    addMobileController(){
+        var minLength = this.game.width < this.game.height ? this.game.width : this.game.height;
+        var controller = this.game.add.sprite(20, this.game.height - (minLength * 1 / 4), 'wsad');
+        controller.width = minLength * 1 / 4 - 20;
+        controller.height = controller.width;
+        controller.alpha = 0.5;
+        controller.fixedToCamera = true;
+        //touch area
+        var touchWidth = controller.width * 1 / 3;
+        var touchHeight = controller.height * 1 / 3;
+        this.game.geowar.touchAreW = new Phaser.Rectangle(controller.x + touchWidth,controller.y,touchWidth,touchHeight);
+        this.game.geowar.touchAreA = new Phaser.Rectangle(controller.x,controller.y + touchHeight,touchWidth,touchHeight);
+        this.game.geowar.touchAreD = new Phaser.Rectangle(controller.x + (touchWidth * 2),controller.y + touchHeight,touchWidth,touchHeight);
+        this.game.geowar.touchAreS = new Phaser.Rectangle(controller.x + touchWidth,controller.y + (touchHeight * 2),touchWidth,touchHeight);
+        //fire
+        var fire = this.game.add.sprite(this.game.width - (minLength * 1 / 6), this.game.height - (minLength * 1 / 6), 'fire');
+        fire.width = minLength * 1 / 6 - 20;
+        fire.height = fire.width;
+        fire.alpha = 0.5;
+        fire.fixedToCamera = true;
+        this.game.geowar.touchAreF = new Phaser.Rectangle(fire.x,fire.y,fire.width,fire.height);
     }
 
     update() {

@@ -20,6 +20,8 @@ export default class Preload {
         this.load.image('logo', 'assets/images/logo.png');
         this.load.image('play', 'assets/images/play.png');
         this.load.image('replay', 'assets/images/replay.png');
+        this.load.image('wsad', 'assets/images/wsad.png');
+        this.load.image('fire', 'assets/images/fire.png');
 
         //start load
         this.load.start();

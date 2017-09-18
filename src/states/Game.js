@@ -27,9 +27,9 @@ export default class Game extends Phaser.State {
         //after create new collision group update the group to collide with bounds 
         this.game.physics.p2.updateBoundsCollisionGroup();
         //player
-        this.player = this.playerFactory.createPlayer('',{
-            replay : this.replaySignal,
-            kill : this.killSignal
+        this.player = this.playerFactory.createPlayer('', {
+            replay: this.replaySignal,
+            kill: this.killSignal
         });
         this.game.add.existing(this.player);
         playersGroup.add(this.player);
@@ -38,22 +38,22 @@ export default class Game extends Phaser.State {
         this.game.geowar.currentPlayer = this.player;
         //set up socket
         this.game.geowar.socketHandler = new SocketHandler(io(this.game.geowar.server), this.game);
-        //create AI players
+        //create AI
         this.createAIPlayers();
     }
 
 
-    setupUI(){
+    setupUI() {
         this.UILayer = this.add.group();
         // this.bloodUI = new NumberBox(this.game, 50, 20, 'Blood', 20, { font: "15px Arial", align: "center", fill: "red" } , 0);
         // this.UILayer.add(this.bloodUI);
 
         //ammos
-        this.ammoUI = new NumberBox(this.game, 50, 20, 'Ammos', this.game.geowar.initBulletCount, { font: "15px Arial", align: "center", fill: "#fff" } , 0);
+        this.ammoUI = new NumberBox(this.game, 50, 20, 'Ammos', this.game.geowar.initBulletCount, { font: "15px Arial", align: "center", fill: "#fff" }, 0);
         this.UILayer.add(this.ammoUI);
         //kills
-        this.killUI = new NumberBox(this.game, 150, 20, 'Kills', 0, { font: "15px Arial", align: "center", fill: "#fff" } , 0);
-        this.UILayer.add(this.killUI); 
+        this.killUI = new NumberBox(this.game, 150, 20, 'Kills', 0, { font: "15px Arial", align: "center", fill: "#fff" }, 0);
+        this.UILayer.add(this.killUI);
 
         this.UILayer.fixedToCamera = true;
 
@@ -65,28 +65,28 @@ export default class Game extends Phaser.State {
     }
 
 
-    addSignals(){
+    addSignals() {
         this.addReplaySignal();
         this.addKillSignal();
     }
 
 
-    addReplaySignal(){
+    addReplaySignal() {
         this.replaySignal = new Phaser.Signal();
-        this.replaySignal.addOnce(this.popupReplayBtn,this);
+        this.replaySignal.addOnce(this.popupReplayBtn, this);
     }
 
-    addKillSignal(){
+    addKillSignal() {
         this.killSignal = new Phaser.Signal();
-        this.killSignal.add(this.updateKillCount,this);
+        this.killSignal.add(this.updateKillCount, this);
     }
 
 
-    updateKillCount(){
+    updateKillCount() {
         this.killUI.setValue(this.killUI.getValue() + 1);
     }
 
-    popupReplayBtn(){
+    popupReplayBtn() {
         this.replay = this.add.sprite(this.game.width / 2, this.game.height / 2, 'replay');
         this.replay.anchor.setTo(0.5, 0.5);
         this.replay.scale.setTo(0.1, 0.1);
@@ -111,12 +111,26 @@ export default class Game extends Phaser.State {
     }
 
 
-    createAIPlayers(){
-        var aiGroup = this.game.add.group();
-        for(var i = 0; i < Math.floor(Math.random() * 8 + 3); i++){
-          var aiPlayer = this.playerFactory.createAIPlayer('triangle');
-          aiGroup.add(aiPlayer);
-        }
+    createAIPlayers() {
+        this.game.geowar.aiGroup = this.game.add.group();
+        var i = 0;
+        var randomTotal = Math.floor(Math.random() * 8 + 3);
+        this.game.geowar.log('create ' + randomTotal + ' AI');
+        var timeEvent = this.game.time.events.loop(Phaser.Timer.SECOND, function () {
+            if (i < randomTotal) {
+                var aiPlayer = this.playerFactory.createAIPlayer('triangle');
+                this.game.geowar.aiGroup.add(aiPlayer);
+                i++;
+            }
+            else{
+                if(this.game.geowar.aiGroup.children.length == 0){
+                   i = 0;
+                   randomTotal = Math.floor(Math.random() * 8 + 3); 
+                   this.game.geowar.log('add ' + randomTotal + ' AI');
+                }
+            }
+        }, this);
     }
+
 
 }

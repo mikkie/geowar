@@ -166,6 +166,10 @@ export default class Weapon {
         bullet.kill();
     };
 
+    addBullet(count){
+       this.bulletCounts += count;
+    }
+
 
     initBulletVelocity() {
         var angle = this.player.body.angle;

@@ -10,6 +10,7 @@ export default class Player extends Phaser.Sprite {
         this.width = width;
         this.height = height;
         this.canvas = this.key;
+        this.alpha = 0;
         this.needControl = needControl;
         this.signals = signals;
         this.blood = 20;
@@ -30,6 +31,7 @@ export default class Player extends Phaser.Sprite {
         this.collideSetting();
         this.weaponFactory = weaponFactory;
         this.createWeapon();
+        this.game.add.tween(this).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
     }
 
 
@@ -126,6 +128,11 @@ export default class Player extends Phaser.Sprite {
     }
 
 
+    winBullet(){
+        this.weapon.addBullet(this.game.geowar.winBulletCount);
+    }
+
+
     destroy(destroyChildren, destroyTexture) {
         this.triggerExplode();
         //myself killed 
@@ -135,6 +142,7 @@ export default class Player extends Phaser.Sprite {
         //kill other  
         else if (this.game.geowar.currentPlayer.playerId != this.playerId && this.game.geowar.currentPlayer.signals && this.game.geowar.currentPlayer.signals.kill) {
             this.game.geowar.currentPlayer.signals.kill.dispatch();
+            this.game.geowar.currentPlayer.winBullet();
         }
         super.destroy(destroyChildren, destroyTexture);
         //coz the weapon not children, need to destory too

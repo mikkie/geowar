@@ -6,13 +6,14 @@ export default class Boot {
     create() {
         //namespace
         this.game.geowar = {
-            server : 'http://www.yamixed.com/nodejs',
+            server : 'http://localhost:8081/nodejs',
             initBulletCount : 50,
+            winBulletCount : 5,
             enablePredict : false,
             debug : localStorage.getItem('geowar.debug') == 'true' ? true : false,
             log : function(msg){
                if(this.debug){
-                 console.log(msg + ' : ' + new Date().getTime()); 
+                 console.log(msg); 
                }   
             }
         }; 

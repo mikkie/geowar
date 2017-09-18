@@ -80,29 +80,31 @@ export default class Player extends Phaser.Sprite {
                 this.weapon.fire(this);
             }
 
-            if (this.game.input.activePointer.isDown) {
-                var pointer = {
-                    x: this.game.input.activePointer.x,
-                    y: this.game.input.activePointer.y
-                };
-                if (this.game.geowar.touchAreA.contains(pointer.x, pointer.y)) {
-                    this.body.rotateLeft(50);
-                }
-                else if (this.game.geowar.touchAreD.contains(pointer.x, pointer.y)) {
-                    this.body.rotateRight(50);
-                }
-                else {
-                    this.body.setZeroRotation();
-                }
-                if (this.game.geowar.touchAreW.contains(pointer.x, pointer.y)) {
-                    this.body.thrust(300);
-                }
-                else if (this.game.geowar.touchAreS.contains(pointer.x, pointer.y)) {
-                    this.body.reverse(300);
-                }
+            for (var i = 0; i < this.game.input.pointers.length; i++) {
+                if (this.game.input.pointers[i].isDown) {
+                    var pointer = {
+                        x: this.game.input.pointers[i].x,
+                        y: this.game.input.pointers[i].y
+                    };
+                    if (this.game.geowar.touchAreA.contains(pointer.x, pointer.y)) {
+                        this.body.rotateLeft(50);
+                    }
+                    else if (this.game.geowar.touchAreD.contains(pointer.x, pointer.y)) {
+                        this.body.rotateRight(50);
+                    }
+                    else {
+                        this.body.setZeroRotation();
+                    }
+                    if (this.game.geowar.touchAreW.contains(pointer.x, pointer.y)) {
+                        this.body.thrust(300);
+                    }
+                    else if (this.game.geowar.touchAreS.contains(pointer.x, pointer.y)) {
+                        this.body.reverse(300);
+                    }
 
-                if (this.game.geowar.touchAreF.contains(pointer.x, pointer.y)) {
-                    this.weapon.fire(this);
+                    if (this.game.geowar.touchAreF.contains(pointer.x, pointer.y)) {
+                        this.weapon.fire(this);
+                    }
                 }
             }
 

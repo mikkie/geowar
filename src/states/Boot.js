@@ -17,7 +17,7 @@ export default class Boot {
                }   
             }
         }; 
-        this.game.input.maxPointers = 1;
+        this.game.input.maxPointers = 5;
         //make sure the game running even loose focus
         this.game.stage.disableVisibilityChange = true;
         this.game.state.start('preload');

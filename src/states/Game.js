@@ -24,6 +24,10 @@ export default class Game extends Phaser.State {
         this.game.geowar.bulletCollisionGroup = this.game.physics.p2.createCollisionGroup();
         //after create new collision group update the group to collide with bounds 
         this.game.physics.p2.updateBoundsCollisionGroup();
+        //create AI
+        this.createAIPlayers();
+        //setup UI
+        this.setupUI();
         //player
         this.player = this.playerFactory.createPlayer('', {
             replay: this.replaySignal,
@@ -36,10 +40,6 @@ export default class Game extends Phaser.State {
         this.game.geowar.currentPlayer = this.player;
         //set up socket
         this.game.geowar.socketHandler = new SocketHandler(io(this.game.geowar.server), this.game);
-        //create AI
-        this.createAIPlayers();
-        //setup UI
-        this.setupUI();
     }
 
 
@@ -67,8 +67,8 @@ export default class Game extends Phaser.State {
 
     addMobileController() {
         var minLength = this.game.width < this.game.height ? this.game.width : this.game.height;
-        var controller = this.game.add.sprite(20, this.game.height - (minLength * 1 / 4), 'wsad');
-        controller.width = minLength * 1 / 4 - 20;
+        var controller = this.game.add.sprite(20, this.game.height - (minLength * 1 / 2), 'wsad');
+        controller.width = minLength * 1 / 2 - 20;
         controller.height = controller.width;
         controller.alpha = 0.5;
         controller.fixedToCamera = true;
@@ -80,8 +80,8 @@ export default class Game extends Phaser.State {
         this.game.geowar.touchAreD = new Phaser.Rectangle(controller.x + (touchWidth * 2), controller.y + touchHeight, touchWidth, touchHeight);
         this.game.geowar.touchAreS = new Phaser.Rectangle(controller.x + touchWidth, controller.y + (touchHeight * 2), touchWidth, touchHeight);
         //fire
-        var fire = this.game.add.sprite(this.game.width - (minLength * 1 / 6), this.game.height - (minLength * 1 / 6), 'fire');
-        fire.width = minLength * 1 / 6 - 20;
+        var fire = this.game.add.sprite(this.game.width - (minLength * 1 / 4), this.game.height - (minLength * 1 / 4), 'fire');
+        fire.width = minLength * 1 / 4 - 20;
         fire.height = fire.width;
         fire.alpha = 0.5;
         fire.fixedToCamera = true;

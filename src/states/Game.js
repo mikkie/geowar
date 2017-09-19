@@ -55,7 +55,9 @@ export default class Game extends Phaser.State {
         this.killUI = new NumberBox(this.game, 150, 20, 'Kills', 0, { font: "15px Arial", align: "center", fill: "#fff" }, 0);
         this.UILayer.add(this.killUI);
 
-        this.addMobileController();
+        if (Utils.mobileAndTabletcheck()) {
+            this.addMobileController();
+        }
         this.UILayer.fixedToCamera = true;
 
         this.addSignals();
@@ -63,7 +65,7 @@ export default class Game extends Phaser.State {
 
 
 
-    addMobileController(){
+    addMobileController() {
         var minLength = this.game.width < this.game.height ? this.game.width : this.game.height;
         var controller = this.game.add.sprite(20, this.game.height - (minLength * 1 / 4), 'wsad');
         controller.width = minLength * 1 / 4 - 20;
@@ -73,17 +75,17 @@ export default class Game extends Phaser.State {
         //touch area
         var touchWidth = controller.width * 1 / 3;
         var touchHeight = controller.height * 1 / 3;
-        this.game.geowar.touchAreW = new Phaser.Rectangle(controller.x + touchWidth,controller.y,touchWidth,touchHeight);
-        this.game.geowar.touchAreA = new Phaser.Rectangle(controller.x,controller.y + touchHeight,touchWidth,touchHeight);
-        this.game.geowar.touchAreD = new Phaser.Rectangle(controller.x + (touchWidth * 2),controller.y + touchHeight,touchWidth,touchHeight);
-        this.game.geowar.touchAreS = new Phaser.Rectangle(controller.x + touchWidth,controller.y + (touchHeight * 2),touchWidth,touchHeight);
+        this.game.geowar.touchAreW = new Phaser.Rectangle(controller.x + touchWidth, controller.y, touchWidth, touchHeight);
+        this.game.geowar.touchAreA = new Phaser.Rectangle(controller.x, controller.y + touchHeight, touchWidth, touchHeight);
+        this.game.geowar.touchAreD = new Phaser.Rectangle(controller.x + (touchWidth * 2), controller.y + touchHeight, touchWidth, touchHeight);
+        this.game.geowar.touchAreS = new Phaser.Rectangle(controller.x + touchWidth, controller.y + (touchHeight * 2), touchWidth, touchHeight);
         //fire
         var fire = this.game.add.sprite(this.game.width - (minLength * 1 / 6), this.game.height - (minLength * 1 / 6), 'fire');
         fire.width = minLength * 1 / 6 - 20;
         fire.height = fire.width;
         fire.alpha = 0.5;
         fire.fixedToCamera = true;
-        this.game.geowar.touchAreF = new Phaser.Rectangle(fire.x,fire.y,fire.width,fire.height);
+        this.game.geowar.touchAreF = new Phaser.Rectangle(fire.x, fire.y, fire.width, fire.height);
     }
 
     update() {
@@ -148,11 +150,11 @@ export default class Game extends Phaser.State {
                 this.game.geowar.aiGroup.add(aiPlayer);
                 i++;
             }
-            else{
-                if(this.game.geowar.aiGroup.children.length == 0){
-                   i = 0;
-                   randomTotal = Math.floor(Math.random() * 8 + 3); 
-                   this.game.geowar.log('add ' + randomTotal + ' AI');
+            else {
+                if (this.game.geowar.aiGroup.children.length == 0) {
+                    i = 0;
+                    randomTotal = Math.floor(Math.random() * 8 + 3);
+                    this.game.geowar.log('add ' + randomTotal + ' AI');
                 }
             }
         }, this);

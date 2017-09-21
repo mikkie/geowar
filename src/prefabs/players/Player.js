@@ -158,13 +158,13 @@ export default class Player extends Phaser.Sprite {
     }
 
 
-    winBullet() {
-        this.weapon.addBullet(this.game.geowar.winBulletCount);
+    winBullet(context) {
+        this.weapon.addBullet(context.game.geowar.winBulletCount);
     }
 
 
     destroy(destroyChildren, destroyTexture) {
-        this.triggerExplode();
+        this.triggerExplode(this);
         //myself killed 
         if (this.game.geowar.currentPlayer.playerId == this.playerId && this.signals && this.signals.replay) {
             this.signals.replay.dispatch();
@@ -172,7 +172,7 @@ export default class Player extends Phaser.Sprite {
         //kill other  
         else if (this.game.geowar.currentPlayer.playerId != this.playerId && this.game.geowar.currentPlayer.signals && this.game.geowar.currentPlayer.signals.kill) {
             this.game.geowar.currentPlayer.signals.kill.dispatch();
-            this.game.geowar.currentPlayer.winBullet();
+            this.game.geowar.currentPlayer.winBullet(this);
         }
         super.destroy(destroyChildren, destroyTexture);
         //coz the weapon not children, need to destory too
@@ -180,8 +180,8 @@ export default class Player extends Phaser.Sprite {
     }
 
 
-    triggerExplode() {
-        var emitter = this.game.add.emitter(this.x, this.y, 50);
+    triggerExplode(context) {
+        var emitter = context.game.add.emitter(this.x, this.y, 50);
         emitter.gravity = 0;
         emitter.particleClass = ExplosionParticle;
         emitter.makeParticles();
